@@ -7,6 +7,10 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
+/**
+ * 解码器
+ * @author xuxueli
+ */
 public class MessageDecoder extends CumulativeProtocolDecoder {
 
 	/**

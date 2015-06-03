@@ -7,8 +7,4 @@ public class ExceptionKey {
 	 */
 	public static final String defaultKey = "E";
 	
-	/**
-	 * 用户信息不存在
-	 */
-	public static final String accountNotfoundKey = "UE";
 }

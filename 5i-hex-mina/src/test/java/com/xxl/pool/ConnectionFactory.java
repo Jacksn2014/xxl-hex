@@ -7,7 +7,6 @@ import org.apache.commons.pool.PoolableObjectFactory;
 
 /**
  * 链接工厂
- * 
  * @author xuxueli
  */
 public class ConnectionFactory implements PoolableObjectFactory<ConnectionProxy> {

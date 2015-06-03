@@ -5,6 +5,10 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
+/**
+ * 编码器
+ * @author xuxueli
+ */
 public class MessageEncoder implements ProtocolEncoder {
 
 	/**

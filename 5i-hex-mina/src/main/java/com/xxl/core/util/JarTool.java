@@ -4,7 +4,6 @@ import java.io.File;
 
 /**
  * 获取打包后jar的路径信息
- * 
  * @author xuxueli
  */
 public class JarTool {

@@ -5,6 +5,10 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
+/**
+ * 协议编码/解码工厂
+ * @author xuxueli
+ */
 public class MessageProtocolCodecFactory implements ProtocolCodecFactory {
 	private ProtocolDecoder decoder;
 	private ProtocolEncoder encoder;
