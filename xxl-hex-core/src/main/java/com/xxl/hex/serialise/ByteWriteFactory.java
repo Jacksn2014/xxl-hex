@@ -1,4 +1,4 @@
-package com.xxl.hex.util;
+package com.xxl.hex.serialise;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -62,7 +62,7 @@ public class ByteWriteFactory {
 	}
 	
 	public String getHex(){
-		return Byte2HexUtil.byte2hex(getBytes());
+		return ByteHexConverter.byte2hex(getBytes());
 	}
 	
 }

@@ -1,10 +1,10 @@
-package com.xxl.hex.util;
+package com.xxl.hex.serialise;
 
 /**
  * hex/byte util
  * @author xuxueli 2015-11-14 22:47:28
  */
-public class Byte2HexUtil {
+public class ByteHexConverter {
 	private static final String hex_tables = "0123456789ABCDEF";
 	
 	public static String byte2hex (byte[] iBytes) {

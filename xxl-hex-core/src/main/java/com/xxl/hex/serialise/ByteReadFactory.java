@@ -1,4 +1,4 @@
-package com.xxl.hex.util;
+package com.xxl.hex.serialise;
 
 import java.io.UnsupportedEncodingException;
 
@@ -21,7 +21,7 @@ public class ByteReadFactory {
 		}
 		
 		m_iPos = 0;
-		m_byte = Byte2HexUtil.hex2Byte(hex);
+		m_byte = ByteHexConverter.hex2Byte(hex);
 		m_iReqLen = m_byte.length;
 		return true;
 	}

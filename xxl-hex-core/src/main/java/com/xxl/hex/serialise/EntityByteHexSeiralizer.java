@@ -1,4 +1,4 @@
-package com.xxl.hex.util;
+package com.xxl.hex.serialise;
 
 import java.lang.reflect.Field;
 
@@ -10,8 +10,8 @@ import com.xxl.hex.annotation.FieldDef;
 import com.xxl.hex.codec.IRequest;
 import com.xxl.hex.codec.IResponse;
 
-public class HexSeiralizer {
-	private static transient Logger logger = LoggerFactory.getLogger(HexSeiralizer.class);
+public class EntityByteHexSeiralizer {
+	private static transient Logger logger = LoggerFactory.getLogger(EntityByteHexSeiralizer.class);
 	
 	// ------------------------------------ obj byte --------------------------------
 	private static byte[] obj2byte(Object obj){
