@@ -62,14 +62,10 @@ public class HexSeiralizer {
 	
 	// --------------------------------- request serialize/deserialize -------------------
 	public static String serializeRequest(IRequest request){
-		// init data
-		int msgType = request.getMsgType();
-		byte[] objData = obj2byte(request);
 		
-		// init request data
 		ByteWriteFactory requestData = new ByteWriteFactory();
-		requestData.writeInt(msgType);
-		requestData.write(objData);
+		requestData.writeInt(request.getMsgType());
+		requestData.write(obj2byte(request));
 		
 		return requestData.getHex();
 	}
@@ -94,14 +90,13 @@ public class HexSeiralizer {
 	
 	// --------------------------------- response serialize/deserialize -------------------
 	public static String serializeResponse(IResponse response){
-		// init data
-		byte[] objData = obj2byte(response);
 		
-		// init request data
-		ByteWriteFactory requestData = new ByteWriteFactory();
-		requestData.write(objData);
+		ByteWriteFactory writer = new ByteWriteFactory();
+		writer.writeInt(response.getCode());
+		writer.writeString(response.getMsg(), 64);
+		writer.write(obj2byte(response));
 		
-		return requestData.getHex();
+		return writer.getHex();
 	}
 	
 	public static Object deserializeResponse(String response_hex, int msgType){
@@ -111,10 +106,17 @@ public class HexSeiralizer {
 			return null;
 		}
 		
+		int code = reader.readInt();
+		String msg = reader.readString(64);
+		
 		Class<? extends IResponse> responseClazz = HexEnum.get(msgType).getResponseClazz();
 		Object obj = byte2obj(reader, responseClazz);
+		
+		IResponse response = (IResponse) obj;
+		response.setCode(code);
+		response.setMsg(msg);
 				
-		return obj;
+		return response;
 	}
 	
 }
