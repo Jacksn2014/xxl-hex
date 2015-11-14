@@ -1,33 +1,40 @@
 package com.xxl.hex;
 
-import com.xxl.hex.logic.ILogic;
-import com.xxl.hex.logic.impl.DemoLogic;
-import com.xxl.hex.msg.IRequest;
-import com.xxl.hex.msg.request.DemoMsg;
+import com.xxl.hex.codec.IRequest;
+import com.xxl.hex.codec.IResponse;
+import com.xxl.hex.codec.request.DemoRequest;
+import com.xxl.hex.codec.response.DemoResponse;
+import com.xxl.hex.server.handler.IHandler;
+import com.xxl.hex.server.handler.impl.DemoHandler;
 
 public enum HexEnum {
 	
-	DEMO_REQUEST(1000, DemoMsg.class, DemoLogic.class);
+	DEMO_REQUEST(1000, DemoRequest.class, DemoResponse.class, DemoHandler.class);
 	
 	private int msgType;
-	private Class<? extends IRequest> MsgClazz;
-	private Class<? extends ILogic> LogicClazz;
-	private HexEnum(int msgType, Class<? extends IRequest> MsgClazz, Class<? extends ILogic> LogicClazz){
+	private Class<? extends IRequest> requestClazz;
+	private Class<? extends IResponse> responseClazz;
+	private Class<? extends IHandler> handlerClazz;
+	private HexEnum(int msgType, Class<? extends IRequest> requestClazz, 
+			Class<? extends IResponse> responseClazz, Class<? extends IHandler> handlerClazz){
 		this.msgType = msgType;
-		this.MsgClazz = MsgClazz;
-		this.LogicClazz = LogicClazz;
+		this.requestClazz = requestClazz;
+		this.responseClazz = responseClazz;
+		this.handlerClazz = handlerClazz;
 	}
 	
 	public int getMsgType() {
 		return msgType;
 	}
-	public Class<? extends IRequest> getMsgClazz() {
-		return MsgClazz;
+	public Class<? extends IRequest> getRequestClazz() {
+		return requestClazz;
 	}
-	public Class<? extends ILogic> getLogicClazz() {
-		return LogicClazz;
+	public Class<? extends IResponse> getResponseClazz() {
+		return responseClazz;
 	}
-	
+	public Class<? extends IHandler> getHandlerClazz() {
+		return handlerClazz;
+	}
 	public static HexEnum get(int msgType){
 		for (HexEnum item : HexEnum.values()) {
 			if (item.getMsgType() == msgType) {

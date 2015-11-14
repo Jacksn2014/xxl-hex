@@ -5,38 +5,27 @@ import java.io.UnsupportedEncodingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RequestStreamFactory {
-	private static transient Logger logger = LoggerFactory.getLogger(RequestStreamFactory.class);
+/**
+ * byte read util
+ * @author xuxueli 2015-11-15 03:50:10
+ */
+public class ByteReadFactory {
+	private static transient Logger logger = LoggerFactory.getLogger(ByteReadFactory.class);
 	private int m_iPos;
 	private int m_iReqLen;
 	private byte[] m_byte = null;
-	
-	
-	/**
-	 * 解析十六进制请求头
-	 * @param hex
-	 * @return
-	 */
+
 	public boolean readRequestHex(String hex) {
 		if (hex == null || hex.trim().length() == 0 || hex.trim().length() % 2 != 0) {
 			return false;
 		}
 		
 		m_iPos = 0;
-		m_iReqLen = hex.length() / 2;		
-		
-		m_byte = new byte[m_iReqLen];
-		for (int index = 0; index < m_iReqLen; index++) {
-			m_byte[index] = (byte) (0xff & Integer.parseInt(hex.substring(index * 2, index * 2 + 2), 16));
-		}
-		
+		m_byte = Byte2HexUtil.hex2Byte(hex);
+		m_iReqLen = m_byte.length;
 		return true;
 	}
 	
-	/**
-	 * 获取int
-	 * @return
-	 */
 	public int readInt() {
 		if (m_iPos + 4 > m_iReqLen) {
 			return 0;
@@ -49,10 +38,6 @@ public class RequestStreamFactory {
 		return iInt;
 	}
 	
-	/**
-	 * 获取long
-	 * @return
-	 */
 	public long readLong() {
 		if (m_iPos + 8 > m_iReqLen) {
 			return 0;
@@ -69,19 +54,14 @@ public class RequestStreamFactory {
 		return iLong;
 	}
 	
-	/**
-	 * 获取string
-	 * @param iByteSize
-	 * @return
-	 */
-	public String readString(int iByteSize) {
-		if (m_iPos + iByteSize > m_iReqLen) {
+	public String readString(int length) {
+		if (m_iPos + length > m_iReqLen) {
 			logger.error("[byte stream factory read string length error.]");
 			return "";
 		}
 		
 		int index = 0;
-		for (index = 0; index < iByteSize; index++) {
+		for (index = 0; index < length; index++) {
 			if (m_byte[m_iPos + index] == 0) {
 				break;
 			}
@@ -92,7 +72,7 @@ public class RequestStreamFactory {
 		} catch (UnsupportedEncodingException e) {
 			logger.error("[byte stream factory read string exception.]", e);
 		}
-		m_iPos += iByteSize;
+		m_iPos += length;
 		
 		return msg;
 	}
