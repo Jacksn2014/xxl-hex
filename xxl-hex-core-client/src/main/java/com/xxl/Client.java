@@ -13,11 +13,10 @@ public class Client {
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		DemoRequest request = new DemoRequest();
-		request.setMsgType(5000);
 		request.setParam("哈喽，我是client。");
 		
 		String request_hex = ByteHexConverter.byte2hex(request.toHexByte());
-		System.out.println(request_hex);	// 88130000E59388E596BDEFBC8CE68891E698AF636C69656E
+		System.out.println(request_hex);	// 636F6D2E78786C2E64656D6F2E6D73672E726571756573742E44656D6F5265717565737400000000000000000000000000000000000000000000000000000000E59388E596BDEFBC8CE68891E698AF636C69656E
 		
 		// 通讯中...
 		
