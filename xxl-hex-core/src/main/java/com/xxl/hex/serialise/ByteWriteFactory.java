@@ -61,8 +61,4 @@ public class ByteWriteFactory {
 		return bytes;
 	}
 	
-	public String getHex(){
-		return ByteHexConverter.byte2hex(getBytes());
-	}
-	
 }

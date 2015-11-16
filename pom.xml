@@ -7,6 +7,9 @@
 	<packaging>pom</packaging>
 	<modules>
 	<module>xxl-hex-core</module>
+	<module>xxl-hex-core-client</module>
+	<module>xxl-hex-core-api</module>
+	<module>xxl-hex-core-server</module>
 	</modules>
 
 </project>

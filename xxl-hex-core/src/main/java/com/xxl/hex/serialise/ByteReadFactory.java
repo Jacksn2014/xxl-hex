@@ -15,15 +15,10 @@ public class ByteReadFactory {
 	private int m_iReqLen;
 	private byte[] m_byte = null;
 
-	public boolean readRequestHex(String hex) {
-		if (hex == null || hex.trim().length() == 0 || hex.trim().length() % 2 != 0) {
-			return false;
-		}
-		
+	public ByteReadFactory(byte[] hexBytes){
 		m_iPos = 0;
-		m_byte = ByteHexConverter.hex2Byte(hex);
+		m_byte = hexBytes;
 		m_iReqLen = m_byte.length;
-		return true;
 	}
 	
 	public int readInt() {
@@ -75,6 +70,20 @@ public class ByteReadFactory {
 		m_iPos += length;
 		
 		return msg;
+	}
+	
+	public byte[] readByteAll() {
+		byte[] result = null;
+		int length = m_iReqLen - m_iPos;
+		
+		if (length > 0) {
+			result = new byte[length];
+			for (int i = 0; i < length; i++) {
+				result[i] = m_byte[m_iPos + i];
+			}
+			
+		}
+		return result;
 	}
 	
 }
