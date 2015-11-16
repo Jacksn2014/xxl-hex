@@ -16,7 +16,7 @@ public class Server {
 		String request_hex = "636F6D2E78786C2E64656D6F2E6D73672E726571756573742E44656D6F5265717565737400000000000000000000000000000000000000000000000000000000E59388E596BDEFBC8CE68891E698AF636C69656E";
 
 		ByteReadFactory reader = new ByteReadFactory(ByteHexConverter.hex2Byte(request_hex));
-		String ifaceName = reader.readString(64);
+		String ifaceName = reader.readString(IRequest.ifaceName_len);
 		System.out.println(ifaceName);
 		
 		IRequest msg = (IRequest) Class.forName(ifaceName).newInstance();
