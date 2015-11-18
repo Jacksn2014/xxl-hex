@@ -2,6 +2,7 @@ package com.xxl;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.eclipse.jetty.client.ContentExchange;
@@ -14,36 +15,38 @@ import com.xxl.hex.serialise.ByteHexConverter;
 public class Client {
 
 	public static void main(String[] args) {
-		synchronous();
-		// asynchronous();
+		for (int i = 0; i < 100; i++) {
+			//synchronous();
+			asynchronous();
+		}
+		
+		try {
+			TimeUnit.SECONDS.sleep(30);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void synchronous() {
-
-		HttpClient client = new HttpClient();
-		client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);// 还可以进行其他的配置
 		try {
+			HttpClient client = new HttpClient();
+			client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);	// 还可以进行其他的配置
 			client.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			client.start();
+			
 			ContentExchange contentExchange = new ContentExchange();
-			client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+			contentExchange.setMethod("GET");
 			contentExchange.setURL("http://127.0.0.1:8080");
+			client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
 			contentExchange.setTimeout(30000);
 			
-			client.send(contentExchange);// client发送
+			client.send(contentExchange);
+			contentExchange.waitForDone();	// 同步等待结果返回
 			
-			contentExchange.waitForDone();// 同步等待结果返回
 			System.err.println("Responsestatus:" + contentExchange.getResponseStatus());
 			System.out.println("Responsecontent:" + contentExchange.getResponseContent());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -51,30 +54,32 @@ public class Client {
 	 */
 	public static void asynchronous() {
 		HttpClient client = new HttpClient();
-		client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);// 还可以进行其他的配置
+		client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);	// 还可以进行其他的配置
 		try {
 			client.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		ContentExchange exchange = new ContentExchange() {
+		ContentExchange contentExchange = new ContentExchange() {
 			@Override
 			protected void onResponseComplete() throws IOException {
 				super.onResponseComplete();
 				String responseContent = this.getResponseContent();
 				System.out.println(responseContent);
-				// 可以对返回结果自由发挥了
 			}
 		};
-		exchange.setMethod("GET");
-		exchange.setURL("http://127.0.0.1:8080");
+		contentExchange.setMethod("GET");
+		contentExchange.setURL("http://127.0.0.1:8080");
+		client.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+		contentExchange.setTimeout(30000);
 
 		try {
-			client.send(exchange);
+			client.send(contentExchange);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 
 	}
 
