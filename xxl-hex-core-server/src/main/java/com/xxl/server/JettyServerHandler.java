@@ -16,6 +16,14 @@ import com.xxl.hex.msg.impl.IRequest;
 import com.xxl.hex.serialise.ByteHexConverter;
 import com.xxl.hex.serialise.ByteReadFactory;
 
+/**
+ * handle为AbstractHandler抽象类中定义的抽象方法，我们对请求的处理操作主要通过此方法来完成，handle中参数包括：
+ * target：请求的目标，可以是一个URI或者一个命名dispatcher中的名字。
+ * baseRequest：Jetty的可变请求对象，总是unwrapped。
+ * Request：不变的请求对象，可能会被过滤器或servlet包装
+ * Response：响应，可能会被过滤器或servlet包装
+ * hadler设定响应的状态，内容类型，并在使用writer生成响应体之前标记请求为已处理。
+ */
 public class JettyServerHandler extends AbstractHandler {
 
 	@Override
