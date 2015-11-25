@@ -1,4 +1,4 @@
-package com.xxl.handler.impl;
+package com.xxl.service.impl;
 
 import com.xxl.demo.msg.request.DemoRequest;
 import com.xxl.demo.msg.response.DemoResponse;
