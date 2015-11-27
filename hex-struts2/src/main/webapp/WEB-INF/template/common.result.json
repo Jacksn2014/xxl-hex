@@ -1,4 +1,0 @@
-{
-	"ret":"${returnCode?if_exists}",
-	"msg":"${returnMsg?if_exists}"
-}
