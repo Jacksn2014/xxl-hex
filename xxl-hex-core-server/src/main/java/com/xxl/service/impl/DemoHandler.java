@@ -1,12 +1,19 @@
 package com.xxl.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.xxl.demo.msg.request.DemoRequest;
 import com.xxl.demo.msg.response.DemoResponse;
+import com.xxl.hex.codec.impl.IRequest;
+import com.xxl.hex.codec.impl.IResponse;
 import com.xxl.hex.handler.IHandler;
-import com.xxl.hex.msg.impl.IRequest;
-import com.xxl.hex.msg.impl.IResponse;
 
+@Service
 public class DemoHandler extends IHandler{
+	
+	public DemoHandler() {
+		super.registry(DemoRequest.class);
+	}
 
 	@Override
 	public IResponse handle(IRequest request) {
@@ -14,7 +21,8 @@ public class DemoHandler extends IHandler{
 		DemoResponse res = new DemoResponse();
 		res.setCode(200);
 		res.setMsg("success");
-		res.setResult("res:" + msg.getParam());
+		
+		res.setResult("hi, jack. (" + msg.getParam() + ")");
 		return res;
 	}
 	

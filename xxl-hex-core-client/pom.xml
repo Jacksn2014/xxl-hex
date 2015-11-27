@@ -9,6 +9,7 @@
 	<artifactId>xxl-hex-core-client</artifactId>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>com.xxl</groupId>
 			<artifactId>xxl-hex-core</artifactId>
@@ -21,9 +22,9 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-client</artifactId>
-			<version>8.1.18.v20150929</version>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
 		</dependency>
 		
 	</dependencies>

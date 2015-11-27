@@ -1,4 +1,4 @@
-package com.xxl.hex.msg;
+package com.xxl.hex.codec;
 
 import java.lang.reflect.Field;
 

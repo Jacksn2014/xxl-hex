@@ -1,7 +1,7 @@
-package com.xxl.hex.msg.impl;
+package com.xxl.hex.codec.impl;
 
 import com.xxl.hex.annotation.HexField;
-import com.xxl.hex.msg.IHexMsg;
+import com.xxl.hex.codec.IHexMsg;
 import com.xxl.hex.serialise.ByteReadFactory;
 import com.xxl.hex.serialise.ByteWriteFactory;
 

@@ -1,7 +1,7 @@
 package com.xxl.demo.msg.request;
 
 import com.xxl.hex.annotation.HexField;
-import com.xxl.hex.msg.impl.IRequest;
+import com.xxl.hex.codec.impl.IRequest;
 
 
 public class DemoRequest extends IRequest {
