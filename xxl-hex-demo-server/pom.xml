@@ -6,7 +6,7 @@
 		<artifactId>xxl-hex</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xxl-hex-core-server</artifactId>
+	<artifactId>xxl-hex-demo-server</artifactId>
 
 	<properties>
 		<spring.version>3.2.13.RELEASE</spring.version>
@@ -86,7 +86,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.xxl</groupId>
-			<artifactId>xxl-hex-core-api</artifactId>
+			<artifactId>xxl-hex-demo-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

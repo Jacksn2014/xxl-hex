@@ -17,7 +17,7 @@ public class DemoTest {
 		String request_hex = ByteHexConverter.byte2hex(request.toHexByte());
 		System.out.println(request_hex);
 		
-		String url = "http://localhost:8080/xxl-hex-core-server/hexServlet";
+		String url = "http://localhost:8080/xxl-hex-demo-server/hexServlet";
 		String response_hex = HttpUtil.sendHex(url, request_hex);
 		System.out.println(response_hex);
 		
