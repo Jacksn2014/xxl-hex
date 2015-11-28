@@ -6,7 +6,7 @@
 		<artifactId>xxl-hex</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xxl-hex-core-client</artifactId>
+	<artifactId>xxl-hex-demo-client</artifactId>
 
 	<dependencies>
 	
@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.xxl</groupId>
-			<artifactId>xxl-hex-core-api</artifactId>
+			<artifactId>xxl-hex-demo-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		

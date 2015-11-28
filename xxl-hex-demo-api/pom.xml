@@ -6,7 +6,7 @@
 		<artifactId>xxl-hex</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xxl-hex-core-api</artifactId>
+	<artifactId>xxl-hex-demo-api</artifactId>
 	
 	<dependencies>
 		<dependency>
