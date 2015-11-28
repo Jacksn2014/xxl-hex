@@ -1,19 +1,16 @@
-package com.xxl.hex.codec.impl;
+package com.xxl.hex.core.codec.impl;
 
-import com.xxl.hex.annotation.HexField;
-import com.xxl.hex.codec.IHexMsg;
-import com.xxl.hex.serialise.ByteReadFactory;
-import com.xxl.hex.serialise.ByteWriteFactory;
+import com.xxl.hex.core.codec.IHexMsg;
+import com.xxl.hex.core.serialise.ByteReadFactory;
+import com.xxl.hex.core.serialise.ByteWriteFactory;
 
 /**
  * response msg iface
  * @author xuxueli 2015-11-16 21:09:14
  */
 public abstract class IResponse extends IHexMsg {
-	public static final int msg_len = 64;
 	
 	private int code;
-	@HexField(length=msg_len)
 	private String msg;
 	
 	public int getCode() {
@@ -33,8 +30,13 @@ public abstract class IResponse extends IHexMsg {
 	public byte[] toHexByte() {
 		ByteWriteFactory writer = new ByteWriteFactory();
 		
+		// write IResponse
 		writer.writeInt(code);
-		writer.writeString(msg, msg_len);
+		int len = IHexMsg.getParamByteLen(msg);
+		writer.writeInt(len);
+		writer.writeString(msg, len);
+		
+		// write bottom response
 		writer.write(super.toHexByte());
 		
 		return writer.getBytes();
@@ -43,8 +45,11 @@ public abstract class IResponse extends IHexMsg {
 	public IHexMsg fillHexByte(byte[] hexBytes) {
 		ByteReadFactory reader = new ByteReadFactory(hexBytes);
 		
+		// read IResponse
 		this.setCode(reader.readInt());
-		this.setMsg(reader.readString(msg_len));
+		this.setMsg(reader.readString(reader.readInt()));
+		
+		// read bottom response
 		return super.fillHexByte(reader.readByteAll());
 	}
 	

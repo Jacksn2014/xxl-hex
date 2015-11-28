@@ -1,4 +1,4 @@
-package com.xxl.hex.servlet;
+package com.xxl.hex.http.servlet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,14 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xxl.hex.codec.impl.IRequest;
-import com.xxl.hex.codec.impl.IResponse;
-import com.xxl.hex.handler.IHandler;
-import com.xxl.hex.serialise.ByteHexConverter;
-import com.xxl.hex.serialise.ByteReadFactory;
+import com.xxl.hex.core.codec.impl.IRequest;
+import com.xxl.hex.core.codec.impl.IResponse;
+import com.xxl.hex.core.handler.IHandler;
+import com.xxl.hex.core.serialise.ByteHexConverter;
+import com.xxl.hex.core.serialise.ByteReadFactory;
 
 /**
  * hex servlet
+ * @author xuxueli 
+ * @version 2015-11-28 13:56:18
  */
 public class HexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -63,7 +65,7 @@ public class HexServlet extends HttpServlet {
 		try {
 			// parse ifaceName
 			ByteReadFactory reader = new ByteReadFactory(ByteHexConverter.hex2Byte(request_hex));
-			String ifaceName = reader.readString(IRequest.ifaceName_len);
+			String ifaceName = reader.readString(reader.readInt());
 			
 			// parse request
 			IRequest hexRequest = (IRequest) Class.forName(ifaceName).newInstance();

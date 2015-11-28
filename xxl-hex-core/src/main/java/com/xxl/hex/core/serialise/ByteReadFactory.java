@@ -1,4 +1,4 @@
-package com.xxl.hex.serialise;
+package com.xxl.hex.core.serialise;
 
 import java.io.UnsupportedEncodingException;
 

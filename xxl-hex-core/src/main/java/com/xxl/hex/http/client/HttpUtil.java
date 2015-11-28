@@ -1,4 +1,4 @@
-package com.xxl.hex.client;
+package com.xxl.hex.http.client;
 
 import java.io.IOException;
 
@@ -11,6 +11,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * http util to send hex data
+ * @author xuxueli
+ * @version  2015-11-28 15:30:59
+ */
 public class HttpUtil {
 
 	public static String sendHex(String reqURL, String queryString) {

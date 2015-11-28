@@ -1,13 +1,12 @@
-package com.xxl.hex.codec;
+package com.xxl.hex.core.codec;
 
 import java.lang.reflect.Field;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xxl.hex.annotation.HexField;
-import com.xxl.hex.serialise.ByteReadFactory;
-import com.xxl.hex.serialise.ByteWriteFactory;
+import com.xxl.hex.core.serialise.ByteReadFactory;
+import com.xxl.hex.core.serialise.ByteWriteFactory;
 
 /**
  * msg iface
@@ -17,7 +16,24 @@ public abstract class IHexMsg {
 	public static Logger logger = LoggerFactory.getLogger(IHexMsg.class);
 	
 	/**
-	 * serialize this object to hex bytes
+	 * get bytes length*2 of given str
+	 * @return
+	 */
+	public static int getParamByteLen(String str){
+		if (str==null || str.length()==0) {
+			return 0;
+		}
+		// because java base on unicode, and one china code's length is one, but it's cost 2 bytes.
+		int len = str.getBytes().length * 2;
+		if (len % 4 != 0) {
+			// Length is best in multiples of four
+			len = (len/4 + 1) * 4;
+		}
+		return len;
+	}
+	
+	/**
+	 * serialize this bottom object to hex bytes  (only support int and string)
 	 * @return
 	 */
 	public byte[] toHexByte(){
@@ -28,11 +44,10 @@ public abstract class IHexMsg {
 				Class<?> fieldClazz = fieldInfo.getType();
 				fieldInfo.setAccessible(true);
 				if (fieldClazz == String.class) {
-					HexField fieldDef = fieldInfo.getAnnotation(HexField.class);
-					if (fieldDef != null) {
-						String value = (String) fieldInfo.get(this);
-						writer.writeString(value, fieldDef.length());
-					}
+					String value = (String) fieldInfo.get(this);
+					int len = IHexMsg.getParamByteLen(value);
+					writer.writeInt(len);
+					writer.writeString(value, len);
 				} else if (fieldClazz == Integer.TYPE) {
 					int value = fieldInfo.getInt(this);
 					writer.writeInt(value);
@@ -46,8 +61,8 @@ public abstract class IHexMsg {
 	}
 	
 	/**
-	 * deserialize hex to given clazz 
-	 * @param hex
+	 * deserialize hex to given bottom clazz
+	 * @param hexBytes
 	 * @param msgClazz
 	 * @return
 	 */
@@ -60,8 +75,7 @@ public abstract class IHexMsg {
 				Class<?> fieldClazz = fieldInfo.getType();
 				fieldInfo.setAccessible(true);
 				if (fieldClazz == String.class) {
-					HexField fieldDef = fieldInfo.getAnnotation(HexField.class);
-					String sValue = reader.readString(fieldDef.length());
+					String sValue = reader.readString(reader.readInt());
 					fieldInfo.set(msgInfo, sValue);
 				} else if (fieldClazz == Integer.TYPE) {				
 					int iValue = reader.readInt();

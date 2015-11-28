@@ -44,7 +44,7 @@
 	<!-- hex -->	
 	<servlet>
 		<servlet-name>hexServlet</servlet-name>
-		<servlet-class>com.xxl.hex.servlet.HexServlet</servlet-class>
+		<servlet-class>com.xxl.hex.http.servlet.HexServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>hexServlet</servlet-name>

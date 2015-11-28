@@ -1,19 +1,16 @@
-package com.xxl.hex.codec.impl;
+package com.xxl.hex.core.codec.impl;
 
-import com.xxl.hex.annotation.HexField;
-import com.xxl.hex.codec.IHexMsg;
-import com.xxl.hex.serialise.ByteReadFactory;
-import com.xxl.hex.serialise.ByteWriteFactory;
+import com.xxl.hex.core.codec.IHexMsg;
+import com.xxl.hex.core.serialise.ByteReadFactory;
+import com.xxl.hex.core.serialise.ByteWriteFactory;
 
 /**
  * request msg iface
  * @author xuxueli 2015-11-16 21:09:49
  */
 public abstract class IRequest extends IHexMsg {
-	public static final int ifaceName_len = 64;
 	
-	@HexField(length=ifaceName_len)
-	private String ifaceName;
+	private String ifaceName = this.getClass().getName();
 	public String getIfaceName() {
 		return ifaceName;
 	}
@@ -25,7 +22,12 @@ public abstract class IRequest extends IHexMsg {
 	public byte[] toHexByte(){
 		ByteWriteFactory writer = new ByteWriteFactory();
 		
-		writer.writeString(this.getClass().getName(), ifaceName_len);
+		// write IRequest
+		int len = IHexMsg.getParamByteLen(ifaceName);
+		writer.writeInt(len);
+		writer.writeString(ifaceName, len);
+		
+		// write bottom request
 		writer.write(super.toHexByte());
 		
 		return writer.getBytes();
@@ -35,7 +37,10 @@ public abstract class IRequest extends IHexMsg {
 	public IHexMsg fillHexByte(byte[] hexBytes){
 		ByteReadFactory reader = new ByteReadFactory(hexBytes);
 		
-		this.setIfaceName(reader.readString(ifaceName_len));
+		// read IRequest
+		this.setIfaceName(reader.readString(reader.readInt()));
+		
+		// read bottom request
 		return super.fillHexByte(reader.readByteAll());
 	}
 }

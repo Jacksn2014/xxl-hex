@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.xxl.demo.msg.request.DemoRequest;
 import com.xxl.demo.msg.response.DemoResponse;
-import com.xxl.hex.codec.impl.IRequest;
-import com.xxl.hex.codec.impl.IResponse;
-import com.xxl.hex.handler.IHandler;
+import com.xxl.hex.core.codec.impl.IRequest;
+import com.xxl.hex.core.codec.impl.IResponse;
+import com.xxl.hex.core.handler.IHandler;
 
 @Service
 public class DemoHandler extends IHandler{

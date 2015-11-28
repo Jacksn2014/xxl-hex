@@ -2,7 +2,7 @@ package com.xxl.demo.msg.response;
 
 import com.xxl.hex.core.codec.impl.IResponse;
 
-public class DemoResponse extends IResponse {
+public class BaseResponse extends IResponse {
 	
 	private String result;
 
