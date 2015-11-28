@@ -1,10 +1,12 @@
-# 16进制格式数据传输的服务框架xxl-hex
+# 基于16进制数据传输的服务框架xxl-hex
 	github：https://github.com/xuxueli/xxl-hex
 	git.osc：http://git.oschina.net/xuxueli0323/xxl-hex
 	博客地址（内附使用教程）：http://www.cnblogs.com/xuxueli/p/5003305.html
 
 ## 名称：16进制格式数据传输的服务框架xxl-hex
 ## 功能：client端和server端的请求和响应消息，进行hex编码；主要为了达到两个目的：1、消息加密，2、跨语言；
+## 跨语言：目前跨语言数据传输方案有：JSON、XML等，这是另外一个选择
+	Bean对象 >> byte[] >> hex （web通常为：Bean对象 >> Json String）
 ## hex通讯逻辑：
 	第一步：client端：封装IRequest消息，按照注解规则，将消息按照压入字节数组，最终编码为hex，POST给server端；
 	第二步：server端：
@@ -14,8 +16,8 @@
 	第三部：client端：
 		a：接收hex格式响应消息，解码为字节数组，实例化IResponse消息，将字节数组写入消息字段属性上；
 		b：一次hex通讯Finish；
-		
-## 消息体接口详解：Bean对象 >> byte[] >> hex （web通常为：Bean对象 >> Json String）
+
+## 消息体接口详解：
 	请求消息：
 	com.xxl.hex.request.DemoRequest
 	{
