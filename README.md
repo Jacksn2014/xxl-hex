@@ -1,7 +1,5 @@
-## 名称：16进制服务通讯框架xxl-hex
-
+## 名称：16进制格式数据传输的服务框架xxl-hex
 ## 功能：client端和server端的请求和响应消息，进行hex编码；主要为了达到两个目的：1、消息加密，2、跨语言；
-
 ## hex通讯逻辑：
 	第一步：client端：封装IRequest消息，按照注解规则，将消息按照压入字节数组，最终编码为hex，POST给server端；
 	第二步：server端：
@@ -20,14 +18,9 @@
 		String paramB;		
 		int paramC;		
 	}
-	
 	请求消息-字节数组，内容如下：
 	"com.xxl.hex.request.DemoRequest"	// 按照className字节长度压入字节数组
 	"paramA"								// 按照paramB字节长度压入字节数组
 	"paramB"								// 按照paramB字节长度压入字节数组
 	"paramC"								// 压入4个几节到字节数组
-	
 	请求消息-hex： String hex = makeHex(makeByte(demoRequest));
-	
-
-
