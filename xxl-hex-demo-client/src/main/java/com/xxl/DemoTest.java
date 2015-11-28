@@ -11,6 +11,7 @@ import com.xxl.hex.http.client.HttpUtil;
 
 public class DemoTest {
 	
+	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		DemoRequest request = new DemoRequest();
 		request.setParam("hi, lucy.");
