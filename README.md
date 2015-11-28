@@ -8,12 +8,12 @@ git.osc：http://git.oschina.net/xuxueli0323/xxl-hex
 ##简介：
 	xxl-hex是一个轻量级数据传输方案，也是一种轻量级的remoting onhttp工具，使用简单的方法提供了rpc的功能。 采用的是16进制编码协议，拥有以下特点：1、数据加密；2、跨语言；
 	
-## 跨语言，数据传输方案，简要对比（本案为xxl-hex）：
+## xxl-hex（数据传输方案）：跨语言，轻量级，简要对比其他方案
+	xxl-hex（本方案）：一种需要预定规则的Hex数据传输方案（Bean对象 》》》 Hex字符串）；
 	JSON：一种轻量级的数据交换格式，完全独立于语言（Bean对象 》》》 Json字符串）；
 	XML：可扩展标记语言，设计宗旨是传输数据（Bean对象 》》》 XML字符串）；
-	xxl-hex（本方案）：一种需要预定规则的Hex数据传输方案（Bean对象 》》》 Hex字符串）；
 
-## 通讯方案：HttpClient + Servlet
+## xxl-hex（提供简易rpc方案）：HttpClient + Servlet
 	出于kiss考虑，使用最方便系统集成的HttpClient+Servlet方式；
 
 ## 实现原理，部分逻辑点介绍：
