@@ -21,3 +21,4 @@ git.osc：http://git.oschina.net/xuxueli0323/xxl-hex
 	2、IRequest消息结构：IRequest消息首部存放该消息的ClassName，服务端可以根据ClassName反射实例化IRequest，并且匹配Handler执行handle逻辑；
 	3、IRequest匹配Handler：服务端维护一张消息哈希表，根据请求消息的ClassName可以定位到处理的Handler，例如：handlerMap.put("com.xxl.demo.msg.request.DemoRequest", "com.xxl.service.impl.DemoHandler");
 	4、Server端注册Handler：业务Handler必须为IHandler的子类并且需要被启动时初始化（可通过声明为Spring的Service搞定），无参构造里调用super.registry(XRequest.class);即可完成与XRequest的关系匹配；
+	
