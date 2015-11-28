@@ -65,6 +65,7 @@ public class HexServlet extends HttpServlet {
 		try {
 			// parse ifaceName
 			ByteReadFactory reader = new ByteReadFactory(ByteHexConverter.hex2Byte(request_hex));
+			reader.readInt();	// remove totolLength 
 			String ifaceName = reader.readString(reader.readInt());
 			
 			// parse request

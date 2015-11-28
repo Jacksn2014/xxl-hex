@@ -72,18 +72,27 @@ public class ByteReadFactory {
 		return msg;
 	}
 	
-	public byte[] readByteAll() {
-		byte[] result = null;
-		int length = m_iReqLen - m_iPos;
-		
-		if (length > 0) {
-			result = new byte[length];
-			for (int i = 0; i < length; i++) {
-				result[i] = m_byte[m_iPos + i];
-			}
-			
+	public byte[] read(int length) {
+		if (m_iPos + length > m_iReqLen || length<=0) {
+			logger.error("[byte stream factory read string length error.]");
+			return null;
 		}
+		for (int i = 0; i < length; i++) {
+			if (m_byte[m_iPos + i] == 0) {
+				break;
+			}
+		}
+		
+		byte[] result = new byte[length];
+		for (int i = 0; i < length; i++) {
+			result[i] = m_byte[m_iPos + i];
+		}
+		m_iPos += length;
 		return result;
+	}
+	
+	public byte[] readByteAll() {
+		return read(m_iReqLen - m_iPos);
 	}
 	
 }

@@ -16,7 +16,6 @@
 	请求消息：
 	com.xxl.hex.request.DemoRequest
 	{
-		@HexField(length=20)
 		String paramA;		
 		String paramB;		
 		int paramC;		
@@ -24,7 +23,7 @@
 	
 	请求消息-字节数组，内容如下：
 	"com.xxl.hex.request.DemoRequest"	// 按照className字节长度压入字节数组
-	"paramA"								// 按照注解length压入20个字节至字节数组
+	"paramA"								// 按照paramB字节长度压入字节数组
 	"paramB"								// 按照paramB字节长度压入字节数组
 	"paramC"								// 压入4个几节到字节数组
 	
