@@ -2,6 +2,9 @@ package com.xxl.hex.core.serialise;
 
 import java.math.BigInteger;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
 /**
  * hex/byte util
  * @author xuxueli 2015-11-14 22:47:28
@@ -43,14 +46,21 @@ public class ByteHexConverter {
 		return new BigInteger(val, radix).toByteArray();
 	}
 	 
-	public static void main(String[] args) {
-		String temp = "24234234234";
-		System.out.println(new String(temp.getBytes()));
-		System.out.println(byte2hex(temp.getBytes()));
-		System.out.println(new String(hex2Byte(byte2hex(temp.getBytes()))));
+	public static void main(String[] args) throws DecoderException {
+		// hex - byte[] 方案A：位移
+		String temp = "1111111111113d1f3a51sd3f1a32sd1f32as1df2a13sd21f3a2s1df32a13sd2f123s2a3d13fa13sd9999999999";
+		System.out.println("明文:" + new String(temp.getBytes()));
+		System.out.println("编码:" + byte2hex(temp.getBytes()));
+		System.out.println("解码:" + new String(hex2Byte(byte2hex(temp.getBytes()))));
 		
-		System.out.println(byte2radix(temp.getBytes(), HEX));
-		System.out.println(new String(radix2byte(byte2radix(temp.getBytes(), HEX), HEX)));
+		// hex - byte[] 方案B：BigInteger
+		System.out.println("编码:" + byte2radix(temp.getBytes(), HEX));
+		System.out.println("解码:" + new String(radix2byte(byte2radix(temp.getBytes(), HEX), HEX)));
+		
+		// hex - byte[] 方案C：common-codec包中Hex工具类
+		System.out.println("编码:" + Hex.encodeHexString(temp.getBytes()));
+		char[] tmp = Hex.encodeHexString(temp.getBytes()).toCharArray();
+		System.out.println("解码:" + new String(Hex.decodeHex(tmp)));
 	}
 	
 }
