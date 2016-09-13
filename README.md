@@ -1,4 +1,4 @@
-# 基于16进制数据传输的服务框架xxl-hex
+# 基于16进制数据传输的服务框架XXL-HEX
 github：https://github.com/xuxueli/xxl-hex
 
 git.osc：http://git.oschina.net/xuxueli0323/xxl-hex
