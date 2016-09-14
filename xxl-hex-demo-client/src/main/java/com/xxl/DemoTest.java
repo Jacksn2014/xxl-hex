@@ -1,7 +1,7 @@
 package com.xxl;
 
 import com.xxl.demo.msg.DemoRequest;
-import com.xxl.hex.handler.response.HexResponse;
+import com.xxl.demo.msg.DemoResponse;
 import com.xxl.hex.remote.client.HexClient;
 import com.xxl.hex.serialise.JacksonUtil;
 
@@ -20,7 +20,7 @@ public class DemoTest {
 
 		String mapping = "demohandler";
 
-		HexResponse.SimpleHexResponse demoResponse = (HexResponse.SimpleHexResponse) HexClient.handle(BASE_URL, mapping, demoRequest, HexResponse.SimpleHexResponse.class);
+		DemoResponse demoResponse = (DemoResponse) HexClient.handle(BASE_URL, mapping, demoRequest, DemoResponse.class);
 
 		System.out.println(JacksonUtil.writeValueAsString(demoResponse));
 
