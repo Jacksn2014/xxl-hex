@@ -4,15 +4,19 @@
 	<parent>
 		<groupId>com.xxl</groupId>
 		<artifactId>xxl-hex</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>xxl-hex-demo-api</artifactId>
+
+	<properties>
+		<xxl-hex.version>1.0.0</xxl-hex.version>
+	</properties>
 	
 	<dependencies>
 		<dependency>
 			<groupId>com.xxl</groupId>
 			<artifactId>xxl-hex-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${xxl-hex.version}</version>
 		</dependency>
 	</dependencies>
 	

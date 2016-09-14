@@ -1,18 +1,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.xxl</groupId>
 		<artifactId>xxl-hex</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>xxl-hex-demo-server</artifactId>
 
 	<properties>
+		<xxl-hex.version>1.0.0</xxl-hex.version>
 		<spring.version>3.2.13.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
+
+		<!-- xxl-hex -->
+		<dependency>
+			<groupId>com.xxl</groupId>
+			<artifactId>xxl-hex-core</artifactId>
+			<version>${xxl-hex.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xxl</groupId>
+			<artifactId>xxl-hex-demo-api</artifactId>
+			<version>${xxl-hex.version}</version>
+		</dependency>
+
 		<!-- springframe start -->
 		<!-- (级联spring:aopalliance + commons-logging + spring-aop/beans/context/core/expression/web/webmvc) -->
 		<dependency>
@@ -63,7 +77,7 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -76,18 +90,6 @@
 			<artifactId>jsp-api</artifactId>
 			<version>2.1</version>
 			<scope>provided</scope>
-		</dependency>
-
-		<!-- xxl-hex -->
-		<dependency>
-			<groupId>com.xxl</groupId>
-			<artifactId>xxl-hex-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.xxl</groupId>
-			<artifactId>xxl-hex-demo-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

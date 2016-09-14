@@ -4,29 +4,22 @@
 	<parent>
 		<groupId>com.xxl</groupId>
 		<artifactId>xxl-hex</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>xxl-hex-demo-client</artifactId>
+
+	<properties>
+		<xxl-hex.version>1.0.0</xxl-hex.version>
+	</properties>
 
 	<dependencies>
 	
 		<dependency>
 			<groupId>com.xxl</groupId>
-			<artifactId>xxl-hex-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.xxl</groupId>
 			<artifactId>xxl-hex-demo-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${xxl-hex.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.2</version>
-		</dependency>
-		
+
 	</dependencies>
 
 </project>

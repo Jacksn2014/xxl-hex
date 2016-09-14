@@ -4,9 +4,13 @@
 	<parent>
 		<groupId>com.xxl</groupId>
 		<artifactId>xxl-hex</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>xxl-hex-core</artifactId>
+
+	<properties>
+		<spring.version>3.2.13.RELEASE</spring.version>
+	</properties>
 
 	<dependencies>
 	
@@ -46,13 +50,19 @@
 			<version>4.3.6</version>
 		</dependency>
 		
-		<!-- commons-codec -->
+		<!-- jackson -->
 		<dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.9</version>
-        </dependency>
-		
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 	</dependencies>
 	
 	<build>

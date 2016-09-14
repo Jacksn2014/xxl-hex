@@ -43,12 +43,12 @@
 	
 	<!-- hex -->	
 	<servlet>
-		<servlet-name>hexServlet</servlet-name>
-		<servlet-class>com.xxl.hex.http.servlet.HexServlet</servlet-class>
+		<servlet-name>hex</servlet-name>
+		<servlet-class>com.xxl.hex.remote.service.HexServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>hexServlet</servlet-name>
-		<url-pattern>/hexServlet</url-pattern>
+		<servlet-name>hex</servlet-name>
+		<url-pattern>/hex</url-pattern>
 	</servlet-mapping>
 	
 </web-app>
