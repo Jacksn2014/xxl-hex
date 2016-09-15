@@ -1,3 +1,5 @@
+package com.xxl.hex.demo;
+
 import com.xxl.hex.demo.msg.DemoRequest;
 import com.xxl.hex.demo.msg.DemoResponse;
 import com.xxl.hex.remote.client.HexClient;
@@ -5,9 +7,15 @@ import com.xxl.hex.serialise.JacksonUtil;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class DemoTest {
+/**
+ * 客户端调用示例01: 使用官网提供 "HexClient" 发起API请求
+ *
+ * Client 和 Server同为Java语言开发时可使用
+ */
+public class DemoClientTest {
 
 	private static final String BASE_URL = "http://localhost:8080/hex";
+	private static final String mapping = "demohandler";
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
@@ -16,8 +24,7 @@ public class DemoTest {
 		demoRequest.setA(1);
 		demoRequest.setB(2);
 
-		String mapping = "demohandler";
-
+		// invoke
 		DemoResponse demoResponse = (DemoResponse) HexClient.handle(BASE_URL, mapping, demoRequest, DemoResponse.class);
 
 		System.out.println(JacksonUtil.writeValueAsString(demoResponse));

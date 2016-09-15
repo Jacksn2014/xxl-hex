@@ -44,7 +44,17 @@ public class HexHandlerFactory implements ApplicationContextAware {
     public static String dispatchHandler(String mapping, String request_hex){
         // valid param
         if (mapping==null || mapping.trim().length()==0) {
-            return HexClient.formatObj2JsonHex(new HexResponse.SimpleHexResponse("必要参数缺失[mapping]"));
+            StringBuffer sb = new StringBuffer();
+            sb.append("在线HexHandler列表:<hr>");
+            if (handlerMap!=null && handlerMap.size()>0) {
+                for (Map.Entry<String, HexHandler> item: handlerMap.entrySet()) {
+                    Type[] requestClassTypps = ((ParameterizedType)item.getValue().getClass().getGenericSuperclass()).getActualTypeArguments();
+                    Class requestClass = (Class) requestClassTypps[0];
+                    sb.append(item.getKey() + "<br>");
+                }
+            }
+
+            return sb.toString();
         }
         if (request_hex==null || request_hex.trim().length()==0) {
             return HexClient.formatObj2JsonHex(new HexResponse.SimpleHexResponse("必要参数缺失[request_hex]"));
