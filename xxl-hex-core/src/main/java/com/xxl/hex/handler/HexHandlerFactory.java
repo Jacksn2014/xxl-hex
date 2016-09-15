@@ -20,6 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HexHandlerFactory implements ApplicationContextAware {
     private static Logger logger = LoggerFactory.getLogger(HexHandlerFactory.class);
 
+    // comnet passphrase
+    public void setPassphrase(String passphrase) {
+        if (passphrase!=null && passphrase.trim().length()>0) {
+            HexClient.setPassphrase(passphrase);
+        }
+    }
+
+    // handler repository
     private static ConcurrentHashMap<String, HexHandler> handlerMap = new ConcurrentHashMap<String, HexHandler>();
 
     @Override
@@ -60,22 +68,27 @@ public class HexHandlerFactory implements ApplicationContextAware {
             return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse("必要参数缺失[request_hex]"));
         }
 
-        // handler
-        HexHandler handler = handlerMap.get(mapping);
-        if (handler == null) {
-            return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse("handler不存在"));
+        try {
+            // handler
+            HexHandler handler = handlerMap.get(mapping);
+            if (handler == null) {
+                return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse("handler不存在"));
+            }
+
+            // ex requeset
+            Type[] requestClassTypps = ((ParameterizedType)handler.getClass().getGenericSuperclass()).getActualTypeArguments();
+            Class requestClass = (Class) requestClassTypps[0];
+            Object requeset = HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
+
+            // do invoke
+            HexResponse hexResponse = handler.handle(requeset);
+            String response_hex = HexClient.formatObj2Json2Byte2Hex(hexResponse);
+            return response_hex;
+        } catch (Exception e) {
+            logger.error("", e);
+            return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse(e.getMessage()));
         }
 
-        // ex requeset
-        Type[] requestClassTypps = ((ParameterizedType)handler.getClass().getGenericSuperclass()).getActualTypeArguments();
-        Class requestClass = (Class) requestClassTypps[0];
-        Object requeset = HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
-
-        // do invoke
-        HexResponse hexResponse = handler.handle(requeset);
-        String response_hex = HexClient.formatObj2Json2Byte2Hex(hexResponse);
-
-        return response_hex;
     }
 
 }

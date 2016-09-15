@@ -28,8 +28,8 @@ public class DemoClientBTest {
 		// invoke
 		String response_json = HexClient.handleJson(BASE_URL, mapping, request_json);
 
-		// 第九步: Finish, 可以获取API响应数据, 开发自己的业务了
-		System.out.println(response_json);
+		// 第er步: Finish, 可以获取API响应数据, 开发自己的业务了
+		System.out.println("json = " + response_json);
 
 	}
 

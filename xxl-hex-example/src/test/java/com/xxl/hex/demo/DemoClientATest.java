@@ -28,7 +28,7 @@ public class DemoClientATest {
 		// invoke
 		DemoResponse demoResponse = (DemoResponse) HexClient.handleObj(BASE_URL, mapping, demoRequest, DemoResponse.class);
 
-		System.out.println(JacksonUtil.writeValueAsString(demoResponse));
+		System.out.println("json=" + JacksonUtil.writeValueAsString(demoResponse));
 
 	}
 
