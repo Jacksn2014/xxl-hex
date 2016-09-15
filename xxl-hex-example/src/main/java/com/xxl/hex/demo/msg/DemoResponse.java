@@ -4,6 +4,13 @@ import com.xxl.hex.handler.response.HexResponse;
 
 import java.io.Serializable;
 
+/**
+ * 	HexResponse规定:
+ *
+ * 		1、需要继承HexResponse父类
+ * 		2、需要实现Serializable接口
+ *
+ */
 public class DemoResponse extends HexResponse implements Serializable {
 	private static final long serialVersionUID = 42L;
 

@@ -7,6 +7,13 @@ import com.xxl.hex.handler.annotation.HexHandlerMapping;
 import com.xxl.hex.handler.response.HexResponse;
 import org.springframework.stereotype.Service;
 
+/**
+ * 	HexHandler规定
+ *
+ * 		1、需要继承HexHandler<T>父类, 并且指定T(Request对象)类型
+ * 		2、实现父类的handle方法, 并且定义HexResponse, 开发业务逻辑即可。
+ */
+
 @HexHandlerMapping("demohandler")
 @Service
 public class DemoHandler extends HexHandler<DemoRequest> {

@@ -1,5 +1,8 @@
 package com.xxl.hex.demo.msg;
 
+/**
+ * DemoRequest规定: 普通Java类即可
+ */
 public class DemoRequest {
 
 	private int a;
@@ -20,4 +23,5 @@ public class DemoRequest {
 	public void setB(int b) {
 		this.b = b;
 	}
+
 }
