@@ -9,9 +9,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface HexHandlerMapping {
+
     // mapping value
     String value();
-
-    Class requestClass();
 
 }

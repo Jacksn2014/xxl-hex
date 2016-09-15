@@ -1,4 +1,4 @@
-package com.xxl.demo.msg;
+package com.xxl.hex.demo.msg;
 
 import com.xxl.hex.handler.response.HexResponse;
 

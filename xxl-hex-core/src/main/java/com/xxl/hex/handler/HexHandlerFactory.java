@@ -3,10 +3,14 @@ package com.xxl.hex.handler;
 import com.xxl.hex.handler.annotation.HexHandlerMapping;
 import com.xxl.hex.handler.response.HexResponse;
 import com.xxl.hex.remote.client.HexClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by xuxueli on 16/9/14.
  */
 public class HexHandlerFactory implements ApplicationContextAware {
+    private static Logger logger = LoggerFactory.getLogger(HexHandlerFactory.class);
 
     private static ConcurrentHashMap<String, HexHandler> handlerMap = new ConcurrentHashMap<String, HexHandler>();
 
@@ -26,8 +31,9 @@ public class HexHandlerFactory implements ApplicationContextAware {
                 if (serviceBean instanceof HexHandler) {
                     // valid annotation
                     HexHandlerMapping annotation = serviceBean.getClass().getAnnotation(HexHandlerMapping.class);
-                    if (annotation!=null && annotation.value()!=null && annotation.value().trim().length()>0 && annotation.requestClass()!=null) {
+                    if (annotation!=null && annotation.value()!=null && annotation.value().trim().length()>0 ) {
                         handlerMap.put(annotation.value(), (HexHandler) serviceBean);
+                        logger.info(">>>>>>>>>>> xxl-hex, bind hex handler success : {}", annotation.value());
                     }
                 }
 
@@ -51,7 +57,8 @@ public class HexHandlerFactory implements ApplicationContextAware {
         }
 
         // ex requeset
-        Class requestClass = handler.getClass().getAnnotation(HexHandlerMapping.class).requestClass();
+        Type[] requestClassTypps = ((ParameterizedType)handler.getClass().getGenericSuperclass()).getActualTypeArguments();
+        Class requestClass = (Class) requestClassTypps[0];
         Object requeset = HexClient.parseJsonHex2Obj(request_hex, requestClass);
 
         // do invoke

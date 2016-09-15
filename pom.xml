@@ -7,9 +7,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>xxl-hex-core</module>
-		<module>xxl-hex-demo-api</module>
-		<module>xxl-hex-demo-client</module>
-		<module>xxl-hex-demo-server</module>
+		<module>xxl-hex-example</module>
 	</modules>
 
 	<build>
@@ -22,6 +20,14 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<archiveClasses>true</archiveClasses>
 				</configuration>
 			</plugin>
 		</plugins>
