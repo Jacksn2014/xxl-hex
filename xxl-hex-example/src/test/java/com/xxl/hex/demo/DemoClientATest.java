@@ -8,9 +8,10 @@ import com.xxl.hex.serialise.JacksonUtil;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 客户端调用示例01: 使用官网提供 "HexClient" 发起API请求
+ * 客户端调用示例01: 使用官网提供 "HexClient.handleObj" 发起API请求 (适用于双方均未Java语言)
  *
- * Client 和 Server同为Java语言开发时可使用
+ * 特点: 使用方便, 但是需要获取Request和Response的Java类文件
+ *
  */
 public class DemoClientATest {
 

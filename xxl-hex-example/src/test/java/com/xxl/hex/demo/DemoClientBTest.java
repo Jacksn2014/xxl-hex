@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 客户端调用示例01: 使用官网提供 "HexClient" 发起API请求
+ * 客户端调用示例02: 使用官网提供 "HexClient.handleJson" 发起API请求 (适用于双方均未Java语言)
  *
- * Client 和 Server同为Java语言开发时可使用
+ * 特点: 使用灵活, 只需要预定接口JSON数据即可; 而且, 不需要获取Request和Response的Java类文件
  */
 public class DemoClientBTest {
 

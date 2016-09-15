@@ -17,11 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 客户端调用示例02: 按照 "XXL-HEX" 数据封装协议, 原始方式, 发起API请求
+ * 客户端调用示例03: 解析 "XXL-HEX" 数据通信协议, 采用底层最原始方式, 发起API请求 (本实例为 "XXL-HEX" 底层通讯的过程解析模拟, )
  *
- * Client非Java语言, 如object-c开发IOS、C#开发游戏客户端时, 可参考该实例使用
+ * 特点: 非常灵活, 适用于任何语言, 因为 "byte" 和 "JSON" 是最原始的协议, 覆盖已知任何开发语言, 如 "java开发android或j2ee"、"object-c开发IOS"、"C#开发u3d游戏"……等等, 从而实现, 一次开发, 支持任何语言调用。
  */
-public class DemoHexTest {
+public class DemoClientCTest {
 
 	private static final String BASE_URL = "http://localhost:8080/hex";
 	private static final String mapping = "demohandler";
