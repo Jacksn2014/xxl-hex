@@ -40,7 +40,7 @@ public class HexServlet extends HttpServlet {
 		String mapping = request.getParameter(HexClient.MAPPING);
 		String request_hex = request.getParameter(HexClient.HEX);
 
-		// handle
+		// handleObj
 		String response_hex = HexHandlerFactory.dispatchHandler(mapping, request_hex);
 
 		// response
