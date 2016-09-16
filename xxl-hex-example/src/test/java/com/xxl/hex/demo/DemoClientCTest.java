@@ -1,6 +1,5 @@
 package com.xxl.hex.demo;
 
-import com.xxl.hex.remote.client.HexClient;
 import com.xxl.hex.serialise.ByteHexConverter;
 import com.xxl.hex.serialise.ByteReadFactory;
 import com.xxl.hex.serialise.ByteWriteFactory;
@@ -39,8 +38,7 @@ public class DemoClientCTest {
 		int len = ByteHexConverter.getByteLen(json);
 
 		// 第三步: "字节数组格式-API请求" 初始化, 组成为: 4个字节(存放"JSON格式-API请求"长度) + len个字节(存放"JSON格式-API请求"数据内容)
-		ByteWriteFactory byteWriteFactory = new ByteWriteFactory(32 + 4 + len);
-		byteWriteFactory.writeString(HexClient.getPassphraseMd5(), 32);
+		ByteWriteFactory byteWriteFactory = new ByteWriteFactory(4 + len);
 		byteWriteFactory.writeInt(len);
 		byteWriteFactory.writeString(json, len);
 		byte[] bytes = byteWriteFactory.getBytes();
@@ -77,7 +75,6 @@ public class DemoClientCTest {
 
 		// 第八步: "字节数组格式-API响应" 转换为 "JSON格式-API响应"
 		ByteReadFactory byteReadFactory = new ByteReadFactory(response_bytes);
-		byteReadFactory.readString(32);
 		String response_json = byteReadFactory.readString(byteReadFactory.readInt());
 
 		// 第九步: Finish, 可以获取API响应数据, 开发自己的业务了

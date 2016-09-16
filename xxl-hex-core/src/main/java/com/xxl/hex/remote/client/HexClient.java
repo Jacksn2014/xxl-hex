@@ -5,7 +5,6 @@ import com.xxl.hex.serialise.ByteHexConverter;
 import com.xxl.hex.serialise.ByteReadFactory;
 import com.xxl.hex.serialise.ByteWriteFactory;
 import com.xxl.hex.serialise.JacksonUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -31,15 +30,6 @@ import java.util.List;
 public class HexClient {
 	private static Logger logger = LoggerFactory.getLogger(HexClient.class);
 
-	// ---------------------- passphrase ----------------------
-	private static String passphrase = "!8aq38zsduf98aj4fy7u83fe";
-	public static void setPassphrase(String passphrase) {
-		HexClient.passphrase = passphrase;
-	}
-	public static String getPassphraseMd5() {
-		return DigestUtils.md5Hex(passphrase);
-	}
-
 	// ---------------------- serialize ----------------------
 	/**
 	 * format object >>> json >>> byte[] >>> hex
@@ -62,8 +52,7 @@ public class HexClient {
 		int len = ByteHexConverter.getByteLen(json);
 
 		// json to byte[]
-		ByteWriteFactory byteWriteFactory = new ByteWriteFactory(32 + 4 + len);
-		byteWriteFactory.writeString(getPassphraseMd5(), 32);
+		ByteWriteFactory byteWriteFactory = new ByteWriteFactory(4 + len);
 		byteWriteFactory.writeInt(len);
 		byteWriteFactory.writeString(json, len);
 		byte[] bytes = byteWriteFactory.getBytes();
@@ -100,10 +89,6 @@ public class HexClient {
 
 		// byte[] to json
 		ByteReadFactory byteReadFactory = new ByteReadFactory(bytes);
-		String passphrase_md5 = byteReadFactory.readString(32);
-		if (!getPassphraseMd5().equals(passphrase_md5)) {
-			throw new IllegalArgumentException(">>>>>>>>>> xxl-hex, 数据加密口令校验失败");
-		}
 		String json = byteReadFactory.readString(byteReadFactory.readInt());
 		return json;
 	}

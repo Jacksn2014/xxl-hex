@@ -20,13 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HexHandlerFactory implements ApplicationContextAware {
     private static Logger logger = LoggerFactory.getLogger(HexHandlerFactory.class);
 
-    // comnet passphrase
-    public void setPassphrase(String passphrase) {
-        if (passphrase!=null && passphrase.trim().length()>0) {
-            HexClient.setPassphrase(passphrase);
-        }
-    }
-
     // handler repository
     private static ConcurrentHashMap<String, HexHandler> handlerMap = new ConcurrentHashMap<String, HexHandler>();
 
@@ -79,6 +72,13 @@ public class HexHandlerFactory implements ApplicationContextAware {
             Type[] requestClassTypps = ((ParameterizedType)handler.getClass().getGenericSuperclass()).getActualTypeArguments();
             Class requestClass = (Class) requestClassTypps[0];
             Object requeset = HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
+
+            // do validate
+            HexResponse validateResponse = handler.validate(requeset);
+            if (validateResponse!=null) {
+                String response_hex = HexClient.formatObj2Json2Byte2Hex(validateResponse);
+                return response_hex;
+            }
 
             // do invoke
             HexResponse hexResponse = handler.handle(requeset);

@@ -19,8 +19,20 @@ import org.springframework.stereotype.Service;
 public class DemoHandler extends HexHandler<DemoRequest> {
 
 	@Override
+	public HexResponse validate(DemoRequest request) {
+
+		if (request.getA()==0 && request.getB()==0) {
+			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "请输入有意义的参数");
+		}
+
+		return null;
+	}
+
+	@Override
 	public DemoResponse handle(DemoRequest request) {
+
 		int sum = request.getA() + request.getB();
+
 		DemoResponse demoResponse = new DemoResponse();
 		demoResponse.setCode(HexResponse.CODE_SUCCESS);
 		demoResponse.setSum(sum);
