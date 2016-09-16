@@ -22,7 +22,7 @@ public class DemoHandler extends HexHandler<DemoRequest> {
 	public HexResponse validate(DemoRequest request) {
 
 		if (request.getA()==0 && request.getB()==0) {
-			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "请输入有意义的参数");
+			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "参数不可全部为0, 测试用validate方法");
 		}
 
 		return null;
