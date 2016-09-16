@@ -66,7 +66,7 @@ Server端只要由以下三个组件组成:
 
 - 1、HexServlet: 服务端API接口的统一入口, 承担API接口请求的路由功能; 
 - 2、HexHandlerFactory: 服务端核心组件, 负责API接口请求的 "dispatch", 以及消息的编解码以及序列化; 同时作为Handler仓库, 汇总并维护服务端可用业务Handler;
-- 3、HexHandler: 开发人员开发的具体业务Handler, 需要实现 "validate" 和 "handle" 接口, 前者负责业务校验, 后者执行具体的业务逻辑;
+- 3、HexHandler: API接口以HexHandler的形式存在。开发人员开发具体业务Handler时, 需要实现 "validate" 和 "handle" 接口, 前者负责业务校验, 后者执行具体的业务逻辑;
 
 Client端主要由两个模块组成:
 
@@ -103,15 +103,73 @@ Client端主要由两个模块组成:
 
 ## 三、快速入门
 
-#### 3.1 接入XXL-HEX的 "WebAPI" 项目配置
+#### 3.1 服务端配置和开发
 
+- 1、配置maven依赖
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16211032_8JXN.png "在这里输入图片标题")
+
+- 2、配置HexHandler路由入口
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16211435_5tWp.png "在这里输入图片标题")
+
+- 3、配置HexHandler工厂, 并配置HexHandler扫描路径
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16211247_N4BV.png "在这里输入图片标题")
+
+- 4、开发第一个API接口 (可参考下面Demo示例, 进行理解和学习)
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16212548_AaGt.jpg "在这里输入图片标题")
+
+每个API接口, 由三部分组成: HexHandler + Request + HexResponse
+
+开发HexHandler流程:
+
+    1、需要继承HexHandler<T>父类, 并且定义T(Request对象), 该对象为该API接口的入参;
+    2、实现父类的validate方法, 可进行安全性校验, 以及业务参数校验等。返回null表示校验成功;
+    3、实现父类的handle方法, 开发业务逻辑即可, 并且定义HexResponse, 其含义为API接口返回值。
+    4、新增Spring注解	 "@Service", 用于方便的注入Spring容器中其余服务; 新增 "@HexHandlerMapping" 注解, 注解value值为该API接口的唯一标示, Client端调用时将会使用到;
+
+开发Request流程: 创建普通Java类即可
+
+开发HexResponse流程:
+
+    1、需要继承HexResponse父类
+    2、需要实现Serializable接口
+
+访问地址 http://localhost:8080/hex 可查看在提供服务的的API接口
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16213510_yLAg.png "在这里输入图片标题")
+
+#### 3.1 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习)
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16220425_v1LK.jpg "在这里输入图片标题")
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16220437_CHQ4.jpg "在这里输入图片标题")
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16220455_cmyP.jpg "在这里输入图片标题")
+
+三种Client调用Demo说明:
+
+- 1、对象方式调用: 本方式适用于Client同为Java语言, 且Client端可以获取Server端API接口对应的的Request和Response的Java文件 的情况;
+    - 调用方法: 使用官方提供 "HexClient.handleObj" 方法发起API请求
+    - 特点: 使用方便, 但是需要依赖Server端API接口的Request和Response的Java类文件;
+- 2、JSON方式调用: 适用于Client同为Java语言情况;
+    - 调用方法: 使用官网提供 "HexClient.handleJson" 方法发起API请求
+    - 特点: 使用灵活, 不需要依赖Server端
+- 3、原始方式调用: 本方式采用原始方式对XXL-HEX服务端发起请求, 非Java开发语言的开发者, 可以参考本方式, 从而定制各自开发语言Client端实现;
+    - 调用方法: 采用原始方式对XXL-HEX服务端发起请求, 对数据编解码和序列化/反序列化步骤有详细的说明
+    - 特点: 非常灵活, 跨语言。可以根据本方式示例方便的实现一个"面向对象、数据加密、跨语言"的API接口Client端;
 
 ## 四、历史版本
-#### 4.1 版本1.0.0新特性
+#### 4.1 版本1.1.0新特性
+- 1、面向对象: 一个API接口对应 "一个Handler" 和 "Requset对象/Response对象"; 针对Web API开发 (如 Android、IOS 等APP接口开发, 或者 unity3d 等游戏接口开发), 采用面向对象的思维去开发 Web API接口。提高API接口的开发效率以及开发体验;
+- 2、数据加密: 通讯数据以16进制数据的形式存在, 数据天然加密; 同时, 底层为API接口预留了API校验接口, 可方便的扩展数据加密逻辑, 进一步校验数据安全性;
+- 3、跨语言: 一个API接口, 开发一次, 支持任何语言调用(系统开放底层通信协议, 任何语言可灵活定制自己语言的Client端实现), 无论Client端是Android、IOS、C#开发的U3D游戏等等;
 
 #### 规划中
-数据完整性校验, 校验失败, 异常抛出, 异常处理
-文档补全
+- 服务端在线MOCK功能实现(支持通过浏览器访问 http://项目地址/hex 查看可提供服务的所有业务API接口, 同时可在线MOCK接口调用);
+- 数据完整性校验, 校验失败, 异常抛出和异常处理
 
 ## 五、其他
 

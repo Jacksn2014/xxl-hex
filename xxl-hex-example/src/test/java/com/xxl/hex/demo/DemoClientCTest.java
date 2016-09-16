@@ -12,21 +12,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 客户端调用示例03: 解析 "XXL-HEX" 数据通信协议, 采用底层最原始方式, 发起API请求 (本实例为 "XXL-HEX" 底层通讯的过程解析模拟, )
+ * 原始方式调用: 本方式采用原始方式对XXL-HEX服务端发起请求, 非Java开发语言的开发者, 可以参考本方式, 从而定制各自开发语言Client端实现;
  *
- * 特点: 非常灵活, 适用于任何语言, 因为 "byte" 和 "JSON" 是最原始的协议, 覆盖已知任何开发语言, 如 "java开发android或j2ee"、"object-c开发IOS"、"C#开发u3d游戏"……等等, 从而实现, 一次开发, 支持任何语言调用。
+ * 调用方法: 采用原始方式对XXL-HEX服务端发起请求, 对数据编解码和序列化/反序列化步骤有详细的说明, 可以根据之方便的实现一个"面向对象、数据加密、跨语言"的API接口Client端;
+ * 特点: 非常灵活, 适用于任何语言,
  */
 public class DemoClientCTest {
 
 	private static final String BASE_URL = "http://localhost:8080/hex";
 	private static final String mapping = "demohandler";
 	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	public static void main(String[] args) throws Exception {
 
 		// 第一步: "JSON格式-API请求" 初始化 (key值和服务端请求参数属性值保持一致)
 		Map<String, Object> requestMap = new HashMap<String, Object>();

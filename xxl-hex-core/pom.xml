@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.xxl</groupId>
 		<artifactId>xxl-hex</artifactId>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 	</parent>
 	<artifactId>xxl-hex-core</artifactId>
 

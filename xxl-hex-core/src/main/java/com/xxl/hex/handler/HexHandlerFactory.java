@@ -46,12 +46,15 @@ public class HexHandlerFactory implements ApplicationContextAware {
         // valid param
         if (mapping==null || mapping.trim().length()==0) {
             StringBuffer sb = new StringBuffer();
-            sb.append("在线HexHandler列表:<hr>");
+            sb.append("在线HexHandler列表 (" + handlerRepository.size() + ") :<hr>");
             if (handlerRepository !=null && handlerRepository.size()>0) {
                 for (Map.Entry<String, HexHandler> item: handlerRepository.entrySet()) {
                     Type[] requestClassTypps = ((ParameterizedType)item.getValue().getClass().getGenericSuperclass()).getActualTypeArguments();
                     Class requestClass = (Class) requestClassTypps[0];
-                    sb.append(item.getKey() + "<br>");
+                    sb.append(item.getKey());
+                    sb.append(" : ");
+                    sb.append(item.getValue().getClass());
+                    sb.append("<br>");
                 }
             }
 

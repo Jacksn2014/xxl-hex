@@ -8,10 +8,15 @@ import com.xxl.hex.handler.response.HexResponse;
 import org.springframework.stereotype.Service;
 
 /**
- * 	HexHandler规定
+ * 	HexHandler示例, 该示例需求为: 计算参数a和b的和并返回, 启动a和b不可同时为0, 接口约定加密口令passphrase;
  *
- * 		1、需要继承HexHandler<T>父类, 并且指定T(Request对象)类型
- * 		2、实现父类的handle方法, 并且定义HexResponse, 开发业务逻辑即可。
+ * 	每个API接口, 由三部分组成: HexHandler + Request + HexResponse
+ * 	开发HexHandler流程:
+ *
+ * 		1、需要继承HexHandler<T>父类, 并且定义T(Request对象), 该对象为该API接口的入参;
+ * 		2、实现父类的validate方法, 可进行安全性校验, 以及业务参数校验等。返回null表示校验成功;
+ * 		3、实现父类的handle方法, 开发业务逻辑即可, 并且定义HexResponse, 其含义为API接口返回值。
+ * 		4、新增Spring注解	 "@Service", 用于方便的注入Spring容器中其余服务; 新增 "@HexHandlerMapping" 注解, 注解value值为该API接口的唯一标示, Client端调用时将会使用到;
  */
 
 @HexHandlerMapping("demohandler")

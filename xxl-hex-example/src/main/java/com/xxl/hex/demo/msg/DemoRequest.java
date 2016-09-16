@@ -1,7 +1,7 @@
 package com.xxl.hex.demo.msg;
 
 /**
- * DemoRequest规定: 普通Java类即可
+ * 开发Request流程: 创建普通Java类即可
  */
 public class DemoRequest {
 
