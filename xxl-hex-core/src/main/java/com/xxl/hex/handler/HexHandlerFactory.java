@@ -21,7 +21,7 @@ public class HexHandlerFactory implements ApplicationContextAware {
     private static Logger logger = LoggerFactory.getLogger(HexHandlerFactory.class);
 
     // handler repository
-    private static ConcurrentHashMap<String, HexHandler> handlerMap = new ConcurrentHashMap<String, HexHandler>();
+    private static ConcurrentHashMap<String, HexHandler> handlerRepository = new ConcurrentHashMap<String, HexHandler>();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -33,7 +33,7 @@ public class HexHandlerFactory implements ApplicationContextAware {
                     // valid annotation
                     HexHandlerMapping annotation = serviceBean.getClass().getAnnotation(HexHandlerMapping.class);
                     if (annotation!=null && annotation.value()!=null && annotation.value().trim().length()>0 ) {
-                        handlerMap.put(annotation.value(), (HexHandler) serviceBean);
+                        handlerRepository.put(annotation.value(), (HexHandler) serviceBean);
                         logger.info(">>>>>>>>>>> xxl-hex, bind hex handler success : {}", annotation.value());
                     }
                 }
@@ -47,8 +47,8 @@ public class HexHandlerFactory implements ApplicationContextAware {
         if (mapping==null || mapping.trim().length()==0) {
             StringBuffer sb = new StringBuffer();
             sb.append("在线HexHandler列表:<hr>");
-            if (handlerMap!=null && handlerMap.size()>0) {
-                for (Map.Entry<String, HexHandler> item: handlerMap.entrySet()) {
+            if (handlerRepository !=null && handlerRepository.size()>0) {
+                for (Map.Entry<String, HexHandler> item: handlerRepository.entrySet()) {
                     Type[] requestClassTypps = ((ParameterizedType)item.getValue().getClass().getGenericSuperclass()).getActualTypeArguments();
                     Class requestClass = (Class) requestClassTypps[0];
                     sb.append(item.getKey() + "<br>");
@@ -63,7 +63,7 @@ public class HexHandlerFactory implements ApplicationContextAware {
 
         try {
             // handler
-            HexHandler handler = handlerMap.get(mapping);
+            HexHandler handler = handlerRepository.get(mapping);
             if (handler == null) {
                 return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse("handler不存在"));
             }

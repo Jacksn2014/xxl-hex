@@ -5,6 +5,7 @@ package com.xxl.hex.demo.msg;
  */
 public class DemoRequest {
 
+	// 推荐根据业务需求, 定制一个公共Request对象, 然后在业务Handler的validate方式中, 调用公共校验service完成对公共Request对象的校验工作
 	private String passphrase;
 
 	private int a;
