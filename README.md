@@ -58,17 +58,48 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 
 #### 2.1 架构图
 
-![输入图片说明](https://static.oschina.net/uploads/img/201609/16191506_arWF.jpg "在这里输入图片标题")
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16200148_LoMR.jpg "在这里输入图片标题")
 
-#### 2.2 "消息体结构" 设计
+XXL-HEX作为一个API接口实现方案, 是个典型的CS模型。
+
+Server端只要由以下三个组件组成:
+
+- 1、HexServlet: 服务端API接口的统一入口, 承担API接口请求的路由功能; 
+- 2、HexHandlerFactory: 服务端核心组件, 负责API接口请求的 "dispatch", 以及消息的编解码以及序列化; 同时作为Handler仓库, 汇总并维护服务端可用业务Handler;
+- 3、HexHandler: 开发人员开发的具体业务Handler, 需要实现 "validate" 和 "handle" 接口, 前者负责业务校验, 后者执行具体的业务逻辑;
+
+Client端主要由两个模块组成:
+
+- 1、serialize/desecrialize: 负责对消息对象序列化以及编解码操作, 生成服务端可识别的hex消息;
+- 2、remote: 负责和Server端之间的消息通信, 消息体为hex格式数据;
+
+#### 2.2 "一次API接口请求时序图" 分析
+
+![输入图片说明](https://static.oschina.net/uploads/img/201609/16191517_HpcK.jpg "在这里输入图片标题")
+
+从上图可知, 一次API请求过程所经历的流程为:
+
+- 1、Client端创建Request消息对象;
+- 2、Request消息对象, 转换为 "HEX格式Request消息" (Server端只会识别HEX格式消息), POST发送到Server端;
+- 3、HexServlet路由组件, 接收API请求, 将请求发送给HexHandlerFactory组件;
+- 4、HexHandlerFactory负责解码 "HEX格式Request消息", 并反序列化为Request对象, 然后将API请求dispatch到指定的业务Handler上;
+- 5、业务Handler首先会根据Request对象进行validate校验, 校验成功则执行业务handle方法, 执行具体的业务逻辑;
+- 6、业务handle执行结束, 封装执行结果为Response对象;
+- 7、HexHandlerFactory组件负责将Response对象序列化, 然后编码为 "HEX格式Response消息", 返回给HexServlet路由;
+- 8、HexServlet路由组件, 响应 "HEX格式Response消息" 消息给Client端。Finish。
+
+#### 2.3 "消息体结构(HEX数据结构)" 设计
 
 ![输入图片说明](https://static.oschina.net/uploads/img/201609/16193859_JIyu.jpg "在这里输入图片标题")
 
+网络传输时, 请求响应数据以HEX(16进制字符串)的格式存在。HEX格式消息的数据来源如下 (以将请求参数转换为HEX为例) :
 
+- 第一步: 封装 "Request对象" (不同开发语言, 对象可能不同, 这一步仅仅针对Java语言, 如其余开发语言实现Client, 可直接跳到 "第二步" ) 
+- 第二步: 将 "Request对象" 序列化为 "JSON字符串" ; (JSON属性, 应该可服务端Request对象属性保持一致)
+- 第三步: 将 "JSON字符串" 转换为 "特殊格式" 的 字节数据 "byte[]", "byte[]" 的组成:  "JSON字符串"长度(4字节) + "JSON字符串"字节内容;
+- 第四步: 将 "byte[]" 转换为 HEX 数据。 Finish。
 
-#### 2.3 "一次API接口请求时序图" 分析
-
-![输入图片说明](https://static.oschina.net/uploads/img/201609/16191517_HpcK.jpg "在这里输入图片标题")
+至此, 已经生成了服务端可以识别的HEX数据。至于服务端返回的HEX格式数据的解析, 安装上述步骤逆序操作即可。
 
 ## 三、快速入门
 
