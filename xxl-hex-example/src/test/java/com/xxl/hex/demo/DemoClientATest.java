@@ -22,6 +22,7 @@ public class DemoClientATest {
 
 		// 封装参数
 		DemoRequest demoRequest = new DemoRequest();
+		demoRequest.setPassphrase("qwerasdf");
 		demoRequest.setA(1);
 		demoRequest.setB(2);
 

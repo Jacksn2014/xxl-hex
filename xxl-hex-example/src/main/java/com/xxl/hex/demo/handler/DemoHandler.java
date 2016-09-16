@@ -21,8 +21,14 @@ public class DemoHandler extends HexHandler<DemoRequest> {
 	@Override
 	public HexResponse validate(DemoRequest request) {
 
+	    // 安全性校验
+        if (!"qwerasdf".equals(request.getPassphrase())) {
+            return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "加密口令校验失败 (安全性校验) ");
+        }
+
+        // 业务参数校验
 		if (request.getA()==0 && request.getB()==0) {
-			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "参数不可全部为0, 测试用validate方法");
+			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "参数不可全部为0 (业务参数校验)");
 		}
 
 		return null;

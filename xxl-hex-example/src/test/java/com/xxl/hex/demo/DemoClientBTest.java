@@ -21,6 +21,7 @@ public class DemoClientBTest {
 
 		// 第一步: "JSON格式-API请求" 初始化 (key值和服务端请求参数属性值保持一致)
 		Map<String, Object> requestMap = new HashMap<String, Object>();
+		requestMap.put("passphrase", "qwerasdf");
 		requestMap.put("a", 1);
 		requestMap.put("b", 2);
 		String request_json = JacksonUtil.writeValueAsString(requestMap);

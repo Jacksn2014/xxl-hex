@@ -5,8 +5,18 @@ package com.xxl.hex.demo.msg;
  */
 public class DemoRequest {
 
+	private String passphrase;
+
 	private int a;
 	private int b;
+
+	public String getPassphrase() {
+		return passphrase;
+	}
+
+	public void setPassphrase(String passphrase) {
+		this.passphrase = passphrase;
+	}
 
 	public int getA() {
 		return a;
