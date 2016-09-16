@@ -45,6 +45,7 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 - [git.oschina地址](https://git.oschina.net/xuxueli0323/xxl-hex)
 
 博客地址
+- [oschina地址](https://my.oschina.net/xuxueli/blog/747391)
 - [cnblogs地址](http://www.cnblogs.com/xuxueli/p/5003305.html)
 
 技术交流群(仅作技术交流)：367260654    [![image](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=4686e3fe01118445c75673a66b4cc6b2c7ce0641528205b6f403c179062b0a52 )
