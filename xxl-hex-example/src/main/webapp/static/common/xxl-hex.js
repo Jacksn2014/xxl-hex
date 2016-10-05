@@ -81,7 +81,7 @@ function ByteReadFactory() {
         var result = "";
         for (var i = 0; i < length; i++) {
             result += String.fromCharCode( parseInt( this.response_byte[this.offset + i] , 2) )
-            //console.log("readString: " + result);
+            console.log("readString: " + result);
         }
         this.offset += length;
 
@@ -101,67 +101,29 @@ function ByteWriteFactory(){
         this.bytes = this.bytes.concat(intBytes);
     };
     this.writeString = function (strValue, length) {
-        var strBytes = new Array();
-        for (var i = 0; i < strValue.length; i++) {
-            var c = strValue.charCodeAt(i);
-            var s = parseInt(c).toString(2);
-            if(c >= parseInt("000080",16) && c <= parseInt("0007FF",16)){
-                var af = "";
-                for(var j = 0; j < (11 - s.length); j++){
-                    af += "0";
-                }
-                af += s;
-                var n1 = parseInt("110" + af.substring(0,5),2);
-                var n2 = parseInt("110" + af.substring(5),2);
-                if(n1 > 127) n1 -= 256;
-                if(n2 > 127) n2 -= 256;
-                strBytes.push(n1);
-                strBytes.push(n2);
-            }else if(c >= parseInt("000800",16) && c <= parseInt("00FFFF",16)){
-                var af = "";
-                for(var j = 0; j < (16 - s.length); j++){
-                    af += "0";
-                }
-                af += s;
-                var n1 = parseInt("1110" + af.substring(0,4),2);
-                var n2 = parseInt("10" + af.substring(4,10),2);
-                var n3 = parseInt("10" + af.substring(10),2);
-                if(n1 > 127) n1 -= 256;
-                if(n2 > 127) n2 -= 256;
-                if(n3 > 127) n3 -= 256;
-                strBytes.push(n1);
-                strBytes.push(n2);
-                strBytes.push(n3);
-            }else if(c >= parseInt("010000",16) && c <= parseInt("10FFFF",16)){
-                var af = "";
-                for(var j = 0; j < (21 - s.length); j++){
-                    af += "0";
-                }
-                af += s;
-                var n1 = parseInt("11110" + af.substring(0,3),2);
-                var n2 = parseInt("10" + af.substring(3,9),2);
-                var n3 = parseInt("10" + af.substring(9,15),2);
-                var n4 = parseInt("10" + af.substring(15),2);
-                if(n1 > 127) n1 -= 256;
-                if(n2 > 127) n2 -= 256;
-                if(n3 > 127) n3 -= 256;
-                if(n4 > 127) n4 -= 256;
-                strBytes.push(n1);
-                strBytes.push(n2);
-                strBytes.push(n3);
-                strBytes.push(n4);
-            }else{
-                strBytes.push(c & 0xff);
+        var utf8 = [];
+        for (var i=0; i < strValue.length; i++) {
+            var charcode = strValue.charCodeAt(i);
+            if (charcode < 0x80) {
+                utf8.push(charcode);
+            } else if (charcode < 0x800) {
+                utf8.push(0xc0 | (charcode >> 6),
+                    0x80 | (charcode & 0x3f));
+            } else if (charcode < 0xd800 || charcode >= 0xe000) {
+                utf8.push(0xe0 | (charcode >> 12),
+                    0x80 | ((charcode>>6) & 0x3f),
+                    0x80 | (charcode & 0x3f));
+            } else {
+                // let's keep things simple and only handle chars up to U+FFFF...
+                utf8.push(0xef, 0xbf, 0xbd); // U+FFFE "replacement character"
             }
         }
-
-        if (strBytes.length < length){
-            for (var i=strBytes.length; i< length; i++){
-                strBytes.push(0x00);
+        if (utf8.length < length){
+            for (var i=utf8.length; i< length; i++){
+                utf8.push(0x00);
             }
         }
-
-        this.bytes = this.bytes.concat(strBytes);
+        this.bytes = this.bytes.concat(utf8);
     }
 }
 
