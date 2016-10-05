@@ -54,6 +54,7 @@ public class DemoHandler extends HexHandler<DemoRequest> {
 		DemoResponse demoResponse = new DemoResponse();
 		demoResponse.setCode(HexResponse.CODE_SUCCESS);
 		demoResponse.setSum(sum);
+        demoResponse.setMsg("    ");
 		return demoResponse;
 	}
 

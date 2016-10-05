@@ -81,15 +81,13 @@ function ByteReadFactory() {
 
         var result = "";
         for (var i = 0; i < length; i++) {
-            //result += String.fromCharCode( parseInt( this.response_byte[this.offset + i] , 2) )
-            var item = String.fromCharCode( this.response_byte[this.offset + i] );
-
-            if (i >= length-1) {
-                console.log(">>>"+ item );
-                console.log(">>>"+ item.length );
-                console.log(">>>"+ (item.replace(" ", "")).length );
-            } else {
+            var charCode = this.response_byte[this.offset + i];
+            if (charCode > 0) {
+                var item = String.fromCharCode(charCode);
                 result += item;
+            } else {
+                var item = String.fromCharCode(charCode);
+                console.log(i + ">>>"+ charCode +"="+item+"("+ item.length +")");
             }
         }
 
