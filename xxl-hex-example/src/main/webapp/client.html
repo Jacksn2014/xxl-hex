@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS版本Client</title>
+
+</head>
+<body>
+
+<script src="static/common/jquery.min.js"></script>
+<script src="static/common/xxl-hex.js"></script>
+<script>
+
+    // handler
+    var BASE_URL = "http://localhost:8080/hex";
+    var mapping = "demohandler";
+
+    // data
+    var data = {
+        "passphrase": "qwerasdf",
+        "a": 1,
+        "b": 2
+    }
+
+    // invoke
+    var response = HexClient.handle(BASE_URL, mapping, data);
+    console.log("response: " + JSON.stringify(response));
+
+</script>
+
+</body>
+</html>

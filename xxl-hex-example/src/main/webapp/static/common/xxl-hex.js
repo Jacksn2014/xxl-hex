@@ -12,11 +12,11 @@ var HexClient = {
         // json 2 byte
         len = get4Len(getStrLen(request_json));
 
-        var requsetByte = new ByteWriteFactory();
-        requsetByte.writeInt(len);
-        requsetByte.writeString(request_json, len)
+        var requsetWriter = new ByteWriteFactory();
+        requsetWriter.writeInt(len);
+        requsetWriter.writeString(request_json, len)
 
-        var requestBytes = requsetByte.bytes;
+        var requestBytes = requsetWriter.bytes;
 
         // byte 2 hex
         var request_hex = bytesToHex(requestBytes);
@@ -33,26 +33,64 @@ var HexClient = {
                 }
             }
         });
-        return response_hex;
+        if (response_hex) {
+            console.log("response_hex:");
+            console.log(response_hex);
+
+            // hex 2 byte
+            var responseReader = new ByteReadFactory();
+            responseReader.init(response_hex)
+
+            // byte 2 json
+            var resp_len = responseReader.readInt();
+            var response_json = responseReader.readString(resp_len);
+
+            if (response_json && response_json.indexOf("{")>-1) {
+                var response = JSON.parse( response_json );
+                return response;
+            }
+        }
+        return {'code':500, 'msg':'请求失败'};
     }
 }
 
-// --------------------------------- base util ---------------------------------
-
-var hex_tables = "0123456789ABCDEF";
-function bytesToHex(bytes) {
-    for (var hex = [], i = 0; i < bytes.length; i++) {
-        hex.push(hex_tables.charAt((bytes[i] & 0xf0) >> 4));
-        hex.push(hex_tables.charAt((bytes[i] & 0x0f) >> 0));
+// --------------------------------- ByteReadFactory ---------------------------------
+function ByteReadFactory() {
+    this.offset = 0;
+    this.response_byte;
+    this.init = function (response_hex) {
+        this.response_byte = hexToBytes(response_hex);
     }
-    return hex.join("");
-}
-function hexToBytes(hex) {
-    for (var bytes = [], c = 0; c < hex.length; c += 2)
-        bytes.push(parseInt(hex.substr(c, 2), 16));
-    return bytes;
+    this.readInt = function () {
+        if (this.offset + 4 > this.response_byte.length) {
+            return 0;
+        }
+        var intValue = (this.response_byte[this.offset] & 0xff)
+            | ((this.response_byte[this.offset + 1] & 0xff) << 8)
+            | ((this.response_byte[this.offset + 2] & 0xff) << 16)
+            | ((this.response_byte[this.offset + 3] & 0xff) << 24);
+        this.offset += 4;
+        return intValue;
+    }
+    this.readString = function (length) {
+        if (this.offset + length > this.response_byte.length) {
+            console.log("[byte stream factory read string length error.]");
+            return "";
+        }
+
+        var result = "";
+        for (var i = 0; i < length; i++) {
+            result += String.fromCharCode( parseInt( this.response_byte[this.offset + i] , 2) )
+            //console.log("readString: " + result);
+        }
+        this.offset += length;
+
+        console.log("result: " + result);
+        return result;
+    }
 }
 
+// --------------------------------- ByteWriteFactory ---------------------------------
 function ByteWriteFactory(){
     this.bytes  = new Array();
     this.writeInt = function (intValue) {
@@ -127,6 +165,8 @@ function ByteWriteFactory(){
     }
 }
 
+// --------------------------------- len util ---------------------------------
+
 /**
  * get len
  *
@@ -161,4 +201,20 @@ function getStrLen(strValue) {
         }
     }
     return len;
+}
+
+// --------------------------------- hex-byte util ---------------------------------
+
+var hex_tables = "0123456789ABCDEF";
+function bytesToHex(bytes) {
+    for (var hex = [], i = 0; i < bytes.length; i++) {
+        hex.push(hex_tables.charAt((bytes[i] & 0xf0) >> 4));
+        hex.push(hex_tables.charAt((bytes[i] & 0x0f) >> 0));
+    }
+    return hex.join("");
+}
+function hexToBytes(hex) {
+    for (var bytes = [], c = 0; c < hex.length; c += 2)
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+    return bytes;
 }
