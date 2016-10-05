@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="static/common/xxl-hex.js"></script>
+<script src="http://cdn.staticfile.org/jquery/2.2.1/jquery.min.js"></script>
+<script>
+
+    // json
+    var request_data = {
+        "passphrase": "qwerasdf",
+        "a": 1,
+        "b": 99
+    }
+    var request_json = JSON.stringify( request_data );
+    console.log("json:");
+    console.log(request_json)
+
+    // json 2 byte
+    var len = getStrLen(request_json);
+    len = get4Len(len);
+
+    var requsetByte = new ByteWriteFactory();
+    requsetByte.writeInt(len);
+    requsetByte.writeString(request_json, len)
+
+    var requestBytes = requsetByte.bytes;
+
+    console.log("requestBytes:");
+    console.log(requestBytes);
+
+    // byte 2 hex
+    var request_hex = bytesToHex(requestBytes);
+    console.log("request_hex:");
+    console.log(request_hex);
+
+    // request
+    var BASE_URL = "http://localhost:8080/hex";
+    var mapping = "demohandler";
+    var url = BASE_URL + "?mapping=" + mapping + "&hex=" + request_hex;
+
+    $.ajax({
+        url: url,
+        success : function (data) {
+            // response_hex
+            var response_hex = data;
+            console.log("response_hex:");
+            console.log(response_hex);
+
+            // hex 2 byte
+            var temp = hexToBytes(response_hex);
+            console.log("temp:");
+            console.log(temp);
+
+            // byte 2 string
+            console.log(temp.length);
+        }
+    });
+
+
+</script>
+
+</body>
+</html>

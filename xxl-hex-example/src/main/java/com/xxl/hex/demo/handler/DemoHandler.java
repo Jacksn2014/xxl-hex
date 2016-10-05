@@ -5,6 +5,8 @@ import com.xxl.hex.demo.msg.DemoResponse;
 import com.xxl.hex.handler.HexHandler;
 import com.xxl.hex.handler.annotation.HexHandlerMapping;
 import com.xxl.hex.handler.response.HexResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,9 +24,14 @@ import org.springframework.stereotype.Service;
 @HexHandlerMapping("demohandler")
 @Service
 public class DemoHandler extends HexHandler<DemoRequest> {
+	private static transient Logger logger = LoggerFactory.getLogger(DemoHandler.class);
 
 	@Override
 	public HexResponse validate(DemoRequest request) {
+		logger.info("request param:{}", request!=null?request.toString():"null");
+		if (request==null) {
+			return new HexResponse.SimpleHexResponse(HexResponse.CODE_FAIL, "参数非法/缺失");
+		}
 
 	    // 安全性校验
         if (!"qwerasdf".equals(request.getPassphrase())) {

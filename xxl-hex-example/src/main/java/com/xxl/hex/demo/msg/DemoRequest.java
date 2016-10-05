@@ -35,4 +35,12 @@ public class DemoRequest {
 		this.b = b;
 	}
 
+	@Override
+	public String toString() {
+		return "DemoRequest{" +
+				"passphrase='" + passphrase + '\'' +
+				", a=" + a +
+				", b=" + b +
+				'}';
+	}
 }
