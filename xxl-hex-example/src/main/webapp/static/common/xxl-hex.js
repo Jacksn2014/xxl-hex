@@ -1,6 +1,43 @@
 /**
+ *
+ * dependency jquery
  * Created by xuxueli on 16/10/5.
  */
+
+// --------------------------------- hex util ---------------------------------
+var HexClient = {
+    handle: function(BASE_URL, mapping, request_data){
+        var request_json = JSON.stringify( request_data );
+
+        // json 2 byte
+        len = get4Len(getStrLen(request_json));
+
+        var requsetByte = new ByteWriteFactory();
+        requsetByte.writeInt(len);
+        requsetByte.writeString(request_json, len)
+
+        var requestBytes = requsetByte.bytes;
+
+        // byte 2 hex
+        var request_hex = bytesToHex(requestBytes);
+
+        var url = BASE_URL + "?mapping=" + mapping + "&hex=" + request_hex;
+        var response_hex;
+        $.ajax({
+            url: url,
+            async: false,
+            success : function (data) {
+                response_hex =  data;
+                if (response_hex) {
+                    response_hex = response_hex.trim();
+                }
+            }
+        });
+        return response_hex;
+    }
+}
+
+// --------------------------------- base util ---------------------------------
 
 var hex_tables = "0123456789ABCDEF";
 function bytesToHex(bytes) {
@@ -15,7 +52,6 @@ function hexToBytes(hex) {
         bytes.push(parseInt(hex.substr(c, 2), 16));
     return bytes;
 }
-
 
 function ByteWriteFactory(){
     this.bytes  = new Array();
@@ -105,6 +141,11 @@ function get4Len(len) {
     return len;
 }
 
+/**
+ * str len
+ * @param strValue
+ * @returns {number}
+ */
 function getStrLen(strValue) {
     var len = 0;
     for (var i = 0; i < strValue.length; i++) {
