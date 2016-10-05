@@ -44,6 +44,7 @@ var HexClient = {
             // byte 2 json
             var resp_len = responseReader.readInt();
             var response_json = responseReader.readString(resp_len);
+            response_json = response_json.trim();
 
             if (response_json && response_json.indexOf("{")>-1) {
                 var response = JSON.parse( response_json );
@@ -80,12 +81,19 @@ function ByteReadFactory() {
 
         var result = "";
         for (var i = 0; i < length; i++) {
-            result += String.fromCharCode( parseInt( this.response_byte[this.offset + i] , 2) )
-            console.log("readString: " + result);
-        }
-        this.offset += length;
+            //result += String.fromCharCode( parseInt( this.response_byte[this.offset + i] , 2) )
+            var item = String.fromCharCode( this.response_byte[this.offset + i] );
 
-        console.log("result: " + result);
+            if (i >= length-1) {
+                console.log(">>>"+ item );
+                console.log(">>>"+ item.length );
+                console.log(">>>"+ (item.replace(" ", "")).length );
+            } else {
+                result += item;
+            }
+        }
+
+        this.offset += length;
         return result;
     }
 }
