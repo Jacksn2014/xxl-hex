@@ -28,15 +28,14 @@ var HexClient = {
             async: false,
             success : function (data) {
                 response_hex =  data;
+                console.log("request_hex:" + request_hex);
+                console.log("response_hex:" + response_hex);
                 if (response_hex) {
                     response_hex = response_hex.trim();
                 }
             }
         });
         if (response_hex) {
-            console.log("response_hex:");
-            console.log(response_hex);
-
             // hex 2 byte
             var responseReader = new ByteReadFactory();
             responseReader.init(response_hex)
