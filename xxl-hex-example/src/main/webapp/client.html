@@ -23,7 +23,8 @@
     }
 
     // invoke
-    var response = HexClient.handle(BASE_URL, mapping, data);
+    //var response = HexClient.handle(BASE_URL, mapping, data);
+    var response = HexClient.handlePlain(BASE_URL, mapping, data);
     console.log("response: " + JSON.stringify(response));
 
 </script>

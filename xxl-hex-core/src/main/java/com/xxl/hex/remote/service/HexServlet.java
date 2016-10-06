@@ -39,14 +39,21 @@ public class HexServlet extends HttpServlet {
 		// param
 		String mapping = request.getParameter(HexClient.MAPPING);
 		String request_hex = request.getParameter(HexClient.HEX);
+		String plain = request.getParameter(HexClient.PLAIN);
 
 		// handleObj
-		String response_hex = HexHandlerFactory.dispatchHandler(request, response, mapping, request_hex);
+		String response_data = null;
+		if (plain!=null && "true".equals(plain)) {
+			response_data = HexHandlerFactory.dispatchHandlerPlain(request, response, mapping);
+		} else {
+			response_data = HexHandlerFactory.dispatchHandler(request, response, mapping, request_hex);
+		}
+
 
 		// response
 		response.setContentType("text/html;charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().println(response_hex);
+		response.getWriter().println(response_data);
 	}
 	
 }

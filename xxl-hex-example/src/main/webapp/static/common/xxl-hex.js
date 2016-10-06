@@ -27,6 +27,7 @@ var HexClient = {
         var response_hex;
         $.ajax({
             url: url,
+            dataType: 'text',
             async: false,
             success : function (data) {
                 response_hex =  data;
@@ -51,6 +52,23 @@ var HexClient = {
                 var response = JSON.parse( response_json );
                 return response;
             }
+        }
+        return {'code':500, 'msg':'请求失败'};
+    },
+    handlePlain: function(BASE_URL, mapping, request_data){
+        var url = BASE_URL + "?mapping=" + mapping + "&plain=" + true;
+        var response_json;
+        $.ajax({
+            url: url,
+            data: request_data,
+            dataType: 'json',
+            async: false,
+            success : function (data) {
+                response_json = data;
+            }
+        });
+        if (response_json) {
+            return response_json;
         }
         return {'code':500, 'msg':'请求失败'};
     }

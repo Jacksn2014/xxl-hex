@@ -142,6 +142,7 @@ public class HexClient {
 
 	public static final String MAPPING = "mapping";
 	public static final String HEX = "hex";
+	public static final String PLAIN = "plain";
 	/**
 	 * invoke, request-hex 2 response-hex
 	 * @param base_url
