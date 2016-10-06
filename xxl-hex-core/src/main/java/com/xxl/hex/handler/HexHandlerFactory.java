@@ -1,6 +1,7 @@
 package com.xxl.hex.handler;
 
 import com.xxl.hex.handler.annotation.HexHandlerMapping;
+import com.xxl.hex.handler.request.HexRequest;
 import com.xxl.hex.handler.response.HexResponse;
 import com.xxl.hex.remote.client.HexClient;
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -42,7 +45,7 @@ public class HexHandlerFactory implements ApplicationContextAware {
         }
     }
 
-    public static String dispatchHandler(String mapping, String request_hex){
+    public static String dispatchHandler(HttpServletRequest request, HttpServletResponse response, String mapping, String request_hex){
         // valid param
         if (mapping==null || mapping.trim().length()==0) {
             StringBuffer sb = new StringBuffer();
@@ -73,18 +76,22 @@ public class HexHandlerFactory implements ApplicationContextAware {
 
             // ex requeset
             Type[] requestClassTypps = ((ParameterizedType)handler.getClass().getGenericSuperclass()).getActualTypeArguments();
-            Class requestClass = (Class) requestClassTypps[0];
-            Object requeset = HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
+            Class requestClass = (Class) requestClassTypps[0];      // ((Class) requestClassTypps[0]).isAssignableFrom(HexRequest.class)
+            HexRequest hexrequest = (HexRequest) HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
+
+            // init base request
+            hexrequest.setRequest(request);
+            hexrequest.setResponse(response);
 
             // do validate
-            HexResponse validateResponse = handler.validate(requeset);
+            HexResponse validateResponse = handler.validate(hexrequest);
             if (validateResponse!=null) {
                 String response_hex = HexClient.formatObj2Json2Byte2Hex(validateResponse);
                 return response_hex;
             }
 
             // do invoke
-            HexResponse hexResponse = handler.handle(requeset);
+            HexResponse hexResponse = handler.handle(hexrequest);
             String response_hex = HexClient.formatObj2Json2Byte2Hex(hexResponse);
             return response_hex;
         } catch (Exception e) {

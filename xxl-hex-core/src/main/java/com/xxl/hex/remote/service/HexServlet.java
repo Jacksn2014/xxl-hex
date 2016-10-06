@@ -41,7 +41,7 @@ public class HexServlet extends HttpServlet {
 		String request_hex = request.getParameter(HexClient.HEX);
 
 		// handleObj
-		String response_hex = HexHandlerFactory.dispatchHandler(mapping, request_hex);
+		String response_hex = HexHandlerFactory.dispatchHandler(request, response, mapping, request_hex);
 
 		// response
 		response.setContentType("text/html;charset=utf-8");
