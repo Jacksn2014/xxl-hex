@@ -142,7 +142,7 @@ Client端主要由两个模块组成:
 
 ![输入图片说明](https://static.oschina.net/uploads/img/201609/16213510_yLAg.png "在这里输入图片标题")
 
-#### 3.1 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习)
+#### 3.1 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习，并定制其他版本Client端实现)
 
 ![输入图片说明](https://static.oschina.net/uploads/img/201609/16220425_v1LK.jpg "在这里输入图片标题")
 
@@ -162,6 +162,18 @@ Client端主要由两个模块组成:
     - 调用方法: 采用原始方式对XXL-HEX服务端发起请求, 对数据编解码和序列化/反序列化步骤有详细的说明
     - 特点: 非常灵活, 跨语言。可以根据本方式示例方便的实现一个"面向对象、数据加密、跨语言"的API接口Client端;
 
+#### 3.2 JS版本客户端开发
+
+![输入图片说明](https://static.oschina.net/uploads/img/201610/06214700_d7pH.png "在这里输入图片标题")
+
+![输入图片说明](https://static.oschina.net/uploads/img/201610/06214637_WiOh.png "在这里输入图片标题")
+
+系统已经提供了JavaScript版本的Client端实现，调用DemoHandler的JS代码如上图，简单易用。接入之后，底层数据通讯将会以HEX加密串的形式进行数据传输。
+
+首先，提供系统的安全性；其次，API接口一次开发，可以多次复用，无论开发语言是Java、OC、C#、JS等等；而且，API服务端可采用面向对象的方式进行API接口开发，提供开发效率和体验；
+
+让API接口拥有 "面向对象、数据加密、跨语言" 的特点。
+
 ## 四、历史版本
 #### 4.1 版本1.1.0新特性
 - 1、面向对象: 一个API接口对应 "一个Handler" 和 "Requset对象/Response对象"; 针对Web API开发 (如 Android、IOS 等APP接口开发, 或者 unity3d 等游戏接口开发), 采用面向对象的思维去开发 Web API接口。提高API接口的开发效率以及开发体验;
@@ -170,7 +182,7 @@ Client端主要由两个模块组成:
 
 #### 4.2 版本1.2.0新特性
 - 1、Client端，新增Javascript版本实现：示例文件见 "xxl-hex/xxl-hex-example/src/main/webapp/jsclient.html"，启动 "xxl-hex-example" 项目访问即可；
-- 2、Server端，新增明文模式：
+- 2、Server端，新增明文模式：如果系统不需要Hex加密特性，可选择明文数据传输方案；
 
 #### 规划中
 - "xxl-hex-core" 推送maven中央仓库
