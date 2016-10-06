@@ -7,19 +7,21 @@
 // --------------------------------- hex util ---------------------------------
 var HexClient = {
     handle: function(BASE_URL, mapping, request_data){
+        // data 2 json
         var request_json = JSON.stringify( request_data );
 
         // json 2 byte
-        len = get4Len(getStrLen(request_json));
+        var request_byte = unicodeStrToUtf8Byte(request_json);
+        len = get4Len(request_byte.length);
 
         var requsetWriter = new ByteWriteFactory();
         requsetWriter.writeInt(len);
-        requsetWriter.writeString(request_json, len)
+        requsetWriter.writeByte(request_byte, len)
 
-        var requestBytes = requsetWriter.bytes;
+        var final_request_byte = requsetWriter.utf8ByteData;
 
         // byte 2 hex
-        var request_hex = bytesToHex(requestBytes);
+        var request_hex = bytesToHex4Utf8(final_request_byte);
 
         var url = BASE_URL + "?mapping=" + mapping + "&hex=" + request_hex;
         var response_hex;
@@ -54,12 +56,42 @@ var HexClient = {
     }
 }
 
+// --------------------------------- ByteWriteFactory ---------------------------------
+function ByteWriteFactory(){
+    this.utf8ByteData  = new Array();
+    this.writeInt = function (intValue) {
+        var intBytes = new Array(4);
+        for (var index = 0; index < 4; index++) {
+            intBytes[index] = intValue >>> (index * 8);
+        }
+        this.utf8ByteData = this.utf8ByteData.concat(intBytes);
+    };
+    this.writeByte = function (utf8Bytes, length) {
+        if (utf8Bytes.length < length){
+            for (var i=utf8Bytes.length; i< length; i++){
+                utf8Bytes.push(0x00);
+            }
+        }
+        this.utf8ByteData = this.utf8ByteData.concat(utf8Bytes);
+    };
+    this.writeString = function (unicodeStr, length) {
+        var utf8Bytes = unicodeStrToUtf8Byte(unicodeStr);
+        if (utf8Bytes.length < length){
+            for (var i=utf8Bytes.length; i< length; i++){
+                utf8Bytes.push(0x00);
+            }
+        }
+        this.utf8ByteData = this.utf8ByteData.concat(utf8Bytes);
+    }
+}
+
 // --------------------------------- ByteReadFactory ---------------------------------
 function ByteReadFactory() {
     this.offset = 0;
     this.response_byte;
     this.init = function (response_hex) {
-        this.response_byte = hexToBytes(response_hex);
+        this.offset = 0;
+        this.response_byte = hexToBytes4Utf8(response_hex);
     }
     this.readInt = function () {
         if (this.offset + 4 > this.response_byte.length) {
@@ -86,48 +118,12 @@ function ByteReadFactory() {
                 resultByte.push(this.response_byte[this.offset + i]);
             }
         }
-        var result = String.fromCharCode.apply(null, resultByte);
+
+        //var result = String.fromCharCode.apply(null, resultByte);
+        var result = utf8ByteToUnicodeStr(resultByte);
         this.offset += length;
 
-        console.log("result:"+result);
         return result;
-    }
-}
-
-// --------------------------------- ByteWriteFactory ---------------------------------
-function ByteWriteFactory(){
-    this.bytes  = new Array();
-    this.writeInt = function (intValue) {
-        var intBytes = new Array(4);
-        for (var index = 0; index < 4; index++) {
-            intBytes[index] = intValue >>> (index * 8);
-        }
-        this.bytes = this.bytes.concat(intBytes);
-    };
-    this.writeString = function (strValue, length) {
-        var utf8 = [];
-        for (var i=0; i < strValue.length; i++) {
-            var charcode = strValue.charCodeAt(i);
-            if (charcode < 0x80) {
-                utf8.push(charcode);
-            } else if (charcode < 0x800) {
-                utf8.push(0xc0 | (charcode >> 6),
-                    0x80 | (charcode & 0x3f));
-            } else if (charcode < 0xd800 || charcode >= 0xe000) {
-                utf8.push(0xe0 | (charcode >> 12),
-                    0x80 | ((charcode>>6) & 0x3f),
-                    0x80 | (charcode & 0x3f));
-            } else {
-                // let's keep things simple and only handle chars up to U+FFFF...
-                utf8.push(0xef, 0xbf, 0xbd); // U+FFFE "replacement character"
-            }
-        }
-        if (utf8.length < length){
-            for (var i=utf8.length; i< length; i++){
-                utf8.push(0x00);
-            }
-        }
-        this.bytes = this.bytes.concat(utf8);
     }
 }
 
@@ -147,38 +143,121 @@ function get4Len(len) {
     return len;
 }
 
-/**
- * str len
- * @param strValue
- * @returns {number}
- */
-function getStrLen(strValue) {
-    var len = 0;
-    for (var i=0; i < strValue.length; i++) {
-        var charcode = strValue.charCodeAt(i);
-        if (charcode < 0x80) {
-            len += 1;
-        } else if (charcode < 0x800) {
-            len += 2;
-        } else if (charcode < 0xd800 || charcode >= 0xe000) {
-            len += 3;
-        } else {
-            len += 1;
+// --------------------------------- str(unicode)-byte(utf8)- util ---------------------------------
+function unicodeStrToUtf8Byte(unicodeStr) {
+    var utf8Bytes = [];
+    for (var i = 0; i < unicodeStr.length; i++) {
+        var charcode = unicodeStr.charCodeAt(i);
+
+        if ((charcode >= 0x0) && (charcode <= 0x7F)) {
+            utf8Bytes.push(charcode);
+        } else if ((charcode >= 0x80) && (charcode <= 0x7FF)){
+            utf8Bytes.push(0xc0 | ((charcode >> 6) & 0x1F));
+            utf8Bytes.push(0x80 | (charcode & 0x3F));
+        } else if ((charcode >= 0x800) && (charcode <= 0xFFFF)){
+            utf8Bytes.push(0xe0 | ((charcode >> 12) & 0xF));
+            utf8Bytes.push(0x80 | ((charcode >> 6) & 0x3F));
+            utf8Bytes.push(0x80 | (charcode & 0x3F));
+        } else if ((charcode >= 0x10000) && (charcode <= 0x1FFFFF)){
+            utf8Bytes.push(0xF0 | ((charcode >> 18) & 0x7));
+            utf8Bytes.push(0x80 | ((charcode >> 12) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 6) & 0x3F));
+            utf8Bytes.push(0x80 | (charcode & 0x3F));
+        } else if ((charcode >= 0x200000) && (charcode <= 0x3FFFFFF)){
+            utf8Bytes.push(0xF8 | ((charcode >> 24) & 0x3));
+            utf8Bytes.push(0x80 | ((charcode >> 18) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 12) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 6) & 0x3F));
+            utf8Bytes.push(0x80 | (charcode & 0x3F));
+        } else if ((charcode >= 0x4000000) && (charcode <= 0x7FFFFFFF)){
+            utf8Bytes.push(0xFC | ((charcode >> 30) & 0x1));
+            utf8Bytes.push(0x80 | ((charcode >> 24) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 18) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 12) & 0x3F));
+            utf8Bytes.push(0x80 | ((charcode >> 6 ) & 0x3F));
+            utf8Bytes.push(0x80 | (charcode & 0x3F));
         }
     }
-    return len;
+    return utf8Bytes;
 }
 
-// --------------------------------- hex-byte util ---------------------------------
+/**
+ * utf8 byte to unicode string
+ * @param utf8Bytes
+ * @returns {string}
+ */
+function utf8ByteToUnicodeStr(utf8Bytes){
+    var unicodeStr ="";
+    for (var pos = 0; pos < utf8Bytes.length;){
+        var flag= utf8Bytes[pos];
+        var unicode = 0 ;
+        if ((flag >>>7) === 0 ) {
+            unicodeStr+= String.fromCharCode(utf8Bytes[pos]);
+            pos += 1;
+
+        } else if ((flag &0xFC) === 0xFC ){
+            unicode = (utf8Bytes[pos] & 0x3) << 30;
+            unicode |= (utf8Bytes[pos+1] & 0x3F) << 24;
+            unicode |= (utf8Bytes[pos+2] & 0x3F) << 18;
+            unicode |= (utf8Bytes[pos+3] & 0x3F) << 12;
+            unicode |= (utf8Bytes[pos+4] & 0x3F) << 6;
+            unicode |= (utf8Bytes[pos+5] & 0x3F);
+            unicodeStr+= String.fromCharCode(unicode) ;
+            pos += 6;
+
+        }else if ((flag &0xF8) === 0xF8 ){
+            unicode = (utf8Bytes[pos] & 0x7) << 24;
+            unicode |= (utf8Bytes[pos+1] & 0x3F) << 18;
+            unicode |= (utf8Bytes[pos+2] & 0x3F) << 12;
+            unicode |= (utf8Bytes[pos+3] & 0x3F) << 6;
+            unicode |= (utf8Bytes[pos+4] & 0x3F);
+            unicodeStr+= String.fromCharCode(unicode) ;
+            pos += 5;
+
+        } else if ((flag &0xF0) === 0xF0 ){
+            unicode = (utf8Bytes[pos] & 0xF) << 18;
+            unicode |= (utf8Bytes[pos+1] & 0x3F) << 12;
+            unicode |= (utf8Bytes[pos+2] & 0x3F) << 6;
+            unicode |= (utf8Bytes[pos+3] & 0x3F);
+            unicodeStr+= String.fromCharCode(unicode) ;
+            pos += 4;
+
+        } else if ((flag &0xE0) === 0xE0 ){
+            unicode = (utf8Bytes[pos] & 0x1F) << 12;;
+            unicode |= (utf8Bytes[pos+1] & 0x3F) << 6;
+            unicode |= (utf8Bytes[pos+2] & 0x3F);
+            unicodeStr+= String.fromCharCode(unicode) ;
+            pos += 3;
+
+        } else if ((flag &0xC0) === 0xC0 ){ //110
+            unicode = (utf8Bytes[pos] & 0x3F) << 6;
+            unicode |= (utf8Bytes[pos+1] & 0x3F);
+            unicodeStr+= String.fromCharCode(unicode) ;
+            pos += 2;
+
+        } else{
+            unicodeStr+= String.fromCharCode(utf8Bytes[pos]);
+            pos += 1;
+        }
+    }
+    return unicodeStr;
+}
+
+// --------------------------------- byte-hex(utf8) util ---------------------------------
+/**
+ * unicode-str (#unicodeStrToUtf8Byte) >>> utf8-byte (#bytesToHex4Utf8) >>> hex-utf8
+ * unicode-str (#utf8ByteToUnicodeStr) <<< utf8-byte (#hexToBytes4Utf8) <<< hex-utf8
+ */
+
 var hex_tables = "0123456789ABCDEF";
-function bytesToHex(bytes) {
+function bytesToHex4Utf8(bytes) {
     for (var hex = [], i = 0; i < bytes.length; i++) {
         hex.push(hex_tables.charAt((bytes[i] & 0xf0) >> 4));
         hex.push(hex_tables.charAt((bytes[i] & 0x0f) >> 0));
     }
     return hex.join("");
 }
-function hexToBytes(hex) {
+function hexToBytes4Utf8(hex) {
     for (var bytes = [], c = 0; c < hex.length; c += 2)
         bytes.push(parseInt(hex.substr(c, 2), 16));
     return bytes;
