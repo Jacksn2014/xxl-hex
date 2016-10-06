@@ -78,19 +78,18 @@ function ByteReadFactory() {
             return "";
         }
 
-        var result = "";
+        var resultByte = new Array();
         for (var i = 0; i < length; i++) {
             var charCode = this.response_byte[this.offset + i];
             if (charCode > 0) {
-                var item = String.fromCharCode(charCode);
-                result += item;
-            } else {
-                var item = String.fromCharCode(charCode);
-                console.log(i + ">>>"+ charCode +"="+item+"("+ item.length +")");
+                // var item = String.fromCharCode(charCode);
+                resultByte.push(this.response_byte[this.offset + i]);
             }
         }
-
+        var result = String.fromCharCode.apply(null, resultByte);
         this.offset += length;
+
+        console.log("result:"+result);
         return result;
     }
 }
@@ -155,15 +154,15 @@ function get4Len(len) {
  */
 function getStrLen(strValue) {
     var len = 0;
-    for (var i = 0; i < strValue.length; i++) {
-        var c = strValue.charCodeAt(i);
-        if(c >= parseInt("000080",16) && c <= parseInt("0007FF",16)){
+    for (var i=0; i < strValue.length; i++) {
+        var charcode = strValue.charCodeAt(i);
+        if (charcode < 0x80) {
+            len += 1;
+        } else if (charcode < 0x800) {
             len += 2;
-        }else if(c >= parseInt("000800",16) && c <= parseInt("00FFFF",16)){
+        } else if (charcode < 0xd800 || charcode >= 0xe000) {
             len += 3;
-        }else if(c >= parseInt("010000",16) && c <= parseInt("10FFFF",16)){
-            len += 4;
-        }else{
+        } else {
             len += 1;
         }
     }
@@ -171,7 +170,6 @@ function getStrLen(strValue) {
 }
 
 // --------------------------------- hex-byte util ---------------------------------
-
 var hex_tables = "0123456789ABCDEF";
 function bytesToHex(bytes) {
     for (var hex = [], i = 0; i < bytes.length; i++) {
