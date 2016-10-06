@@ -6,9 +6,10 @@
 
 </head>
 <body>
+请打开 Console 控制台查看！
 
 <script src="static/common/jquery.min.js"></script>
-<script src="static/common/xxl-hex.js"></script>
+<script src="static/jsclient/xxl-hex-client.js"></script>
 <script>
 
     // handler
@@ -23,8 +24,8 @@
     }
 
     // invoke
-    //var response = HexClient.handle(BASE_URL, mapping, data);
-    var response = HexClient.handlePlain(BASE_URL, mapping, data);
+    var response = HexClient.handle(BASE_URL, mapping, data);           // HEX模式
+    //var response = HexClient.handlePlain(BASE_URL, mapping, data);    // 明文模式
     console.log("response: " + JSON.stringify(response));
 
 </script>

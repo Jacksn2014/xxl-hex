@@ -168,6 +168,10 @@ Client端主要由两个模块组成:
 - 2、数据加密: 通讯数据以16进制数据的形式存在, 数据天然加密; 同时, 底层为API接口预留了API校验接口, 可方便的扩展数据加密逻辑, 进一步校验数据安全性;
 - 3、跨语言: 一个API接口, 开发一次, 支持任何语言调用(系统开放底层通信协议, 任何语言可灵活定制自己语言的Client端实现), 无论Client端是Android、IOS、C#开发的U3D游戏等等;
 
+#### 4.2 版本1.2.0新特性
+- 1、Client端，新增Javascript版本实现：示例文件见 "xxl-hex/xxl-hex-example/src/main/webapp/jsclient.html"，启动 "xxl-hex-example" 项目访问即可；
+- 2、Server端，新增明文模式：
+
 #### 规划中
 - "xxl-hex-core" 推送maven中央仓库
 - 服务端在线MOCK功能实现(支持通过浏览器访问 http://项目地址/hex 查看可提供服务的所有业务API接口, 同时可在线MOCK接口调用);
