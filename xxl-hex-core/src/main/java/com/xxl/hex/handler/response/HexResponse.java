@@ -32,7 +32,7 @@ public abstract class HexResponse {
 		public SimpleHexResponse() {
 		}
 		public SimpleHexResponse(String msg) {
-			super.code = CODE_SUCCESS;
+			super.code = CODE_FAIL;
 			super.msg = msg;
 		}
 		public SimpleHexResponse(int code, String msg) {
