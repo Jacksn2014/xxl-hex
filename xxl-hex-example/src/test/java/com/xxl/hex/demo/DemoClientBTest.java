@@ -15,7 +15,7 @@ import java.util.Map;
 public class DemoClientBTest {
 
 	private static final String BASE_URL = "http://localhost:8080/hex";
-	private static final String mapping = "demohandler";
+	private static final String mapping = "default/demohandler.wapi";
 
 	public static void main(String[] args) throws Exception {
 

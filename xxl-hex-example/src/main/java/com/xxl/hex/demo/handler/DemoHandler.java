@@ -7,7 +7,6 @@ import com.xxl.hex.handler.annotation.HexHandlerMapping;
 import com.xxl.hex.handler.response.HexResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 /**
  * 	HexHandler示例, 该示例需求为: 计算参数a和b的和并返回, 启动a和b不可同时为0, 接口约定加密口令passphrase;
@@ -21,8 +20,7 @@ import org.springframework.stereotype.Service;
  * 		4、新增Spring注解	 "@Service", 用于方便的注入Spring容器中其余服务; 新增 "@HexHandlerMapping" 注解, 注解value值为该API接口的唯一标示, Client端调用时将会使用到;
  */
 
-@HexHandlerMapping("demohandler")
-@Service
+@HexHandlerMapping("default/demohandler.wapi")
 public class DemoHandler extends HexHandler<DemoRequest> {
 	private static transient Logger logger = LoggerFactory.getLogger(DemoHandler.class);
 

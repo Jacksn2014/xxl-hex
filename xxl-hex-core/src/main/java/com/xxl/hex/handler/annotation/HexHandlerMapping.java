@@ -1,5 +1,7 @@
 package com.xxl.hex.handler.annotation;
 
+import org.springframework.stereotype.Component;
+
 import java.lang.annotation.*;
 
 /**
@@ -8,6 +10,8 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
+@Documented
+@Component
 public @interface HexHandlerMapping {
 
     // mapping value
