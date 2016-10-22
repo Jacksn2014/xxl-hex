@@ -82,6 +82,10 @@ public class HexHandlerFactory implements ApplicationContextAware {
             Class requestClass = (Class) requestClassTypps[0];      // ((Class) requestClassTypps[0]).isAssignableFrom(HexRequest.class)
             HexRequest hexrequest = (HexRequest) HexClient.parseHex2Byte2Json2Obj(request_hex, requestClass);
 
+            if (hexrequest==null) {
+                return HexClient.formatObj2Json2Byte2Hex(new HexResponse.SimpleHexResponse("params parse fail."));
+            }
+
             // init base request
             hexrequest.setRequest(request);
             hexrequest.setResponse(response);
