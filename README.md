@@ -48,7 +48,10 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 - [oschina地址](https://my.oschina.net/xuxueli/blog/747391)
 - [cnblogs地址](http://www.cnblogs.com/xuxueli/p/5003305.html)
 
-技术交流群(仅作技术交流)：367260654    [![image](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=4686e3fe01118445c75673a66b4cc6b2c7ce0641528205b6f403c179062b0a52 )
+##### 技术交流群(仅作技术交流，群1如若已满，可加群2)：
+
+- 群1：367260654    [![image](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=4686e3fe01118445c75673a66b4cc6b2c7ce0641528205b6f403c179062b0a52 )
+- 群2：438249535    [![image](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=e288e6a50a82a1eeed89117f45b4839b4ba69db9a87da63ea915fae5294cc50d )
 
 #### 1.5 环境
 - Maven3+
@@ -192,7 +195,7 @@ Client端主要由两个模块组成:
 ## 五、其他
 
 #### 5.1 报告问题
-项目托管在Github上，如有问题可在 [ISSUES](https://github.com/xuxueli/xxl-hex/issues) 上提问，也可以加入技术交流群(仅作技术交流)：367260654
+项目托管在Github上，如有问题可在 [ISSUES](https://github.com/xuxueli/xxl-hex/issues) 上提问，也可以加入上文技术交流群；
 
 #### 5.2 接入登记
 更多接入公司，欢迎在github [登记](https://github.com/xuxueli/xxl-hex/issues/1 )
