@@ -42,7 +42,7 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 #### 1.4 下载
 源码地址 (将会在两个git仓库同步发布最新代码)
 - [github地址](https://github.com/xuxueli/xxl-hex)
-- [git.oschina地址](https://git.oschina.net/xuxueli0323/xxl-hex)
+- [gitee地址](https://gitee.com/xuxueli0323/xxl-hex)
 
 博客地址
 - [oschina地址](https://my.oschina.net/xuxueli/blog/747391)
