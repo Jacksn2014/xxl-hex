@@ -1,15 +1,21 @@
-# 《面向对象的WebAPI框架XXL-HEX》
+## 《面向对象的WebAPI框架XXL-HEX》
+
+[![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-hex.svg)](https://github.com/xuxueli/xxl-hex/releases)
+[![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
+[![donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square)](http://www.xuxueli.com/page/donate.html)
+
+
 ## 一、简介
 
-#### 1.1 概述
+### 1.1 概述
 XXL-HEX 是一个简单易用的WebAPI框架, 拥有 "面向对象、数据加密、跨语言" 的特点。目标是: 提高Web API (如 Android、IOS 等APP接口, 或者 unity3d 等游戏服务端接口) 的开发体验以及开发效率。现已开放源代码，开箱即用。
 
-#### 1.2 特性
+### 1.2 特性
 - 1、面向对象: 一个API接口对应 "一个Handler" 和 "Requset对象/Response对象"; 针对Web API开发 (如 Android、IOS 等APP接口开发, 或者 unity3d 等游戏接口开发), 采用面向对象的思维去开发 Web API接口。提高API接口的开发效率以及开发体验;
 - 2、数据加密: 通讯数据以16进制数据的形式存在, 数据天然加密; 同时, 底层为API接口预留了API校验接口, 可方便的扩展数据加密逻辑, 进一步校验数据安全性;
 - 3、跨语言: 一个API接口, 开发一次, 支持任何语言调用(系统开放底层通信协议, 任何语言可灵活定制自己语言的Client端实现), 无论Client端是Android、IOS、C#开发的U3D游戏等等;
 
-#### 1.3 背景
+### 1.3 背景
 
 **面向对象**
 
@@ -39,27 +45,29 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 
 如果简单实现跨语言则 RESTFUL 等方案可简单实现, 但是如若要兼容上述 "面向对象" 和 "数据加密" 的特点, 同时保证系统简易且稳定则存在一定难度。XXL-HEX得益于其基于HEX的特性以及底层特殊数据结构, 在保证兼容上述特性的技术上, 天然支持跨语言。
 
-#### 1.4 下载
-源码地址 (将会在两个git仓库同步发布最新代码)
-- [github地址](https://github.com/xuxueli/xxl-hex)
-- [gitee地址](https://gitee.com/xuxueli0323/xxl-hex)
+### 1.4 下载
 
-博客地址
-- [oschina地址](https://my.oschina.net/xuxueli/blog/747391)
-- [cnblogs地址](http://www.cnblogs.com/xuxueli/p/5003305.html)
+#### 源码仓库地址
 
-##### 技术交流群 (仅作技术交流)
+源码仓库地址 | Release Download
+--- | ---
+[https://github.com/xuxueli/xxl-hex](https://github.com/xuxueli/xxl-hex) | [Download](https://github.com/xuxueli/xxl-hex/releases)
+[https://gitee.com/xuxueli0323/xxl-hex](https://gitee.com/xuxueli0323/xxl-hex) | [Download](https://gitee.com/xuxueli0323/xxl-hex/releases)  
 
+
+#### 技术交流
 - [社区交流](http://www.xuxueli.com/page/community.html)
 
-#### 1.5 环境
+
+### 1.5 环境
 - Maven3+
 - Jdk1.7+
 - Tomcat7+
 
+
 ## 二、总体设计
 
-#### 2.1 架构图
+### 2.1 架构图
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_LoMR.jpg "在这里输入图片标题")
 
@@ -76,7 +84,7 @@ Client端主要由两个模块组成:
 - 1、serialize/desecrialize: 负责对消息对象序列化以及编解码操作, 生成服务端可识别的hex消息;
 - 2、remote: 负责和Server端之间的消息通信, 消息体为hex格式数据;
 
-#### 2.2 "一次API接口请求时序图" 分析
+### 2.2 "一次API接口请求时序图" 分析
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_HpcK.jpg "在这里输入图片标题")
 
@@ -91,7 +99,7 @@ Client端主要由两个模块组成:
 - 7、HexHandlerFactory组件负责将Response对象序列化, 然后编码为 "HEX格式Response消息", 返回给HexServlet路由;
 - 8、HexServlet路由组件, 响应 "HEX格式Response消息" 消息给Client端。Finish。
 
-#### 2.3 "消息体结构(HEX数据结构)" 设计
+### 2.3 "消息体结构(HEX数据结构)" 设计
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_JIyu.jpg "在这里输入图片标题")
 
@@ -106,7 +114,7 @@ Client端主要由两个模块组成:
 
 ## 三、快速入门
 
-#### 3.1 服务端配置和开发
+### 3.1 服务端配置和开发
 
 - 1、配置maven依赖
 
@@ -144,7 +152,7 @@ Client端主要由两个模块组成:
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_yLAg.png "在这里输入图片标题")
 
-#### 3.1 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习，并定制其他版本Client端实现)
+### 3.2 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习，并定制其他版本Client端实现)
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_v1LK.jpg "在这里输入图片标题")
 
@@ -164,7 +172,7 @@ Client端主要由两个模块组成:
     - 调用方法: 采用原始方式对XXL-HEX服务端发起请求, 对数据编解码和序列化/反序列化步骤有详细的说明
     - 特点: 非常灵活, 跨语言。可以根据本方式示例方便的实现一个"面向对象、数据加密、跨语言"的API接口Client端;
 
-#### 3.2 JS版本客户端开发
+### 3.3 JS版本客户端开发
 
 ![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_d7pH.png "在这里输入图片标题")
 
@@ -177,24 +185,34 @@ Client端主要由两个模块组成:
 让API接口拥有 "面向对象、数据加密、跨语言" 的特点。
 
 ## 四、历史版本
-#### 4.1 版本1.1.0新特性
+### 4.1 版本1.1.0新特性
 - 1、面向对象: 一个API接口对应 "一个Handler" 和 "Requset对象/Response对象"; 针对Web API开发 (如 Android、IOS 等APP接口开发, 或者 unity3d 等游戏接口开发), 采用面向对象的思维去开发 Web API接口。提高API接口的开发效率以及开发体验;
 - 2、数据加密: 通讯数据以16进制数据的形式存在, 数据天然加密; 同时, 底层为API接口预留了API校验接口, 可方便的扩展数据加密逻辑, 进一步校验数据安全性;
 - 3、跨语言: 一个API接口, 开发一次, 支持任何语言调用(系统开放底层通信协议, 任何语言可灵活定制自己语言的Client端实现), 无论Client端是Android、IOS、C#开发的U3D游戏等等;
 
-#### 4.2 版本1.2.0新特性
+### 4.2 版本1.2.0新特性
 - 1、Client端，新增Javascript版本实现：示例文件见 "xxl-hex/xxl-hex-example/src/main/webapp/jsclient.html"，启动 "xxl-hex-example" 项目访问即可；
 - 2、Server端，新增明文模式：如果系统不需要Hex加密特性，可选择明文数据传输方案；
 
-#### 规划中
+### TODO
 - WebAPI之家：可通过界面查看登记的API列表，支持API管理，支持Mock调用等；
 - 服务端在线MOCK功能实现(支持通过浏览器访问 http://项目地址/hex 查看可提供服务的所有业务API接口, 同时可在线MOCK接口调用);
 - "xxl-hex-core" 推送maven中央仓库
 
 ## 五、其他
 
-#### 5.1 报告问题
-项目托管在Github上，如有问题可在 [ISSUES](https://github.com/xuxueli/xxl-hex/issues) 上提问，也可以加入上文技术交流群；
+### 5.1 项目贡献
+欢迎参与项目贡献！比如提交PR修复一个bug，或者新建 [Issue](https://github.com/xuxueli/xxl-hex/issues/) 讨论新特性或者变更。
 
-#### 5.2 接入登记
-更多接入公司，欢迎在github [登记](https://github.com/xuxueli/xxl-hex/issues/1 )
+### 5.2 用户接入登记
+更多接入的公司，欢迎在 [登记地址](https://github.com/xuxueli/xxl-hex/issues/1 ) 登记，登记仅仅为了产品推广。
+
+### 5.3 开源协议和版权
+产品开源免费，并且将持续提供免费的社区技术支持。个人或企业内部可自由的接入和使用。
+
+- Licensed under the GNU General Public License (GPL) v3.
+- Copyright (c) 2015-present, xuxueli.
+
+---
+### 捐赠
+无论金额多少都足够表达您这份心意，非常感谢 ：）      [前往捐赠](http://www.xuxueli.com/page/donate.html )
